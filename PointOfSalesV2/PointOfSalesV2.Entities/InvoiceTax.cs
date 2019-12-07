@@ -1,0 +1,54 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace PointOfSalesV2.Entities
+{
+    public class InvoiceTax : CommonData, IEquatable<InvoiceTax>
+    {
+
+
+        public long InvoiceId { get; set; }
+        public long CurrencyId { get; set; }
+        public long TaxId { get; set; }
+        public string NoInvoice { get; set; }
+        public DateTime Fecha { get; set; }
+        public decimal MontoTax { get; set; }
+
+        [ForeignKey("TaxId")]
+        public Tax Tax { get; set; }
+
+        [ForeignKey("CurrencyId")]
+        public Currency Currency { get; set; }
+
+
+      
+
+
+
+        public bool Equals(InvoiceTax other)
+        {
+            return (this.Id == other.Id && this.InvoiceId == other.InvoiceId && this.TaxId == other.TaxId && this.MontoTax == other.MontoTax &&
+                this.Active == other.Active && this.CreatedDate == other.CreatedDate);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                long hashCode = 13;
+                hashCode = (hashCode * 397) ^ this.Id;
+                hashCode = (hashCode * 397) ^ this.TaxId;
+                hashCode = (hashCode * 397) ^ this.InvoiceId;
+                hashCode = (hashCode * 397) ^ Convert.ToInt32(this.Active);
+                var hashCodeDecimal = this.MontoTax.GetHashCode();
+                hashCode = hashCode ^ hashCodeDecimal;
+
+                return hashCode;
+            }
+        }
+    }
+}
