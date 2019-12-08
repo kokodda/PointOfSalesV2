@@ -12,9 +12,9 @@ namespace PointOfSalesV2.Entities
     {
         public string Series { get; set; }
         public string Type { get; set; }
-        public int Sequence { get; set; }
-        public int NumericControl { get; set; }
-        public int Quantity { get; set; }
+        public long Sequence { get; set; }
+        public long NumericControl { get; set; }
+        public long Quantity { get; set; }
 
         public string Name { get; set; }
 

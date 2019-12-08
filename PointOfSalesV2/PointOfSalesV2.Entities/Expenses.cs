@@ -74,7 +74,7 @@ namespace PointOfSalesV2.Entities
         public Supplieres Supplier { get; set; }
 
         [NotMapped]
-        public int NumberOfDays
+        public long NumberOfDays
         {
             get
             {

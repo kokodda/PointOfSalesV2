@@ -57,16 +57,16 @@ namespace PointOfSalesV2.Entities
             this.Cost = nuevaInvoice.Cost;
         }
 
-        public int CustomerId { get; set; }
+        public long CustomerId { get; set; }
 
-        public int ZoneId { get; set; }
+        public long ZoneId { get; set; }
         public string DocumentNumber { get; set; }
         public decimal DiscountPercentage { get; set; }
-        public int? SellerId { get; set; }
+        public long? SellerId { get; set; }
 
-        public int WarehouseId { get; set; }
+        public long WarehouseId { get; set; }
         public decimal SellerPercentage { get; set; } = 0;
-        public int? CajaId { get; set; }
+        public long? CajaId { get; set; }
 
 
 
@@ -83,10 +83,10 @@ namespace PointOfSalesV2.Entities
         public string NRC { get; set; }
 
 
-        public int LocationId { get; set; }
+        public long LocationId { get; set; }
 
         public string InvoiceNumber { get; set; }
-        public int CurrencyId { get; set; }
+        public long CurrencyId { get; set; }
         public decimal TotalAmount { get; set; }
         public string TRN { get; set; }
         public string TRNType { get; set; }

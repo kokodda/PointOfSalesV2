@@ -13,16 +13,16 @@ namespace PointOfSalesV2.Entities
         public string CardId { get; set; }
         public string PhoneNumber { get; set; }
 
-        public int CurrencyId { get; set; }
+        public long CurrencyId { get; set; }
 
         public string Address { get; set; }
         public string Code { get; set; }
-        public int InvoiceDueDays { get; set; }
+        public long InvoiceDueDays { get; set; }
 
         public decimal BillingAmountLimit { get; set; }
         public decimal CreditAmountLimit { get; set; }
-        public int? AssignedWarehouseId { get; set; }
-        public int? ZoneId { get; set; }
+        public long? AssignedWarehouseId { get; set; }
+        public long? ZoneId { get; set; }
 
 
         public string Name { get; set; }
