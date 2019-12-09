@@ -43,17 +43,17 @@ namespace PointOfSalesV2.Entities
 
       
 
-        [NotMapped]
+     
         public List<ProductTax> Taxes { get; set; }
 
 
 
 
 
-        [NotMapped]
-        public List<UnitProductEquivalence> ProductoUnidades { get; set; }
+      
+        public List<UnitProductEquivalence> ProductUnits { get; set; }
 
-        [NotMapped]
+   
         public List<CompositeProduct> BaseCompositeProducts { get; set; }
 
 

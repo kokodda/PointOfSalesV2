@@ -16,7 +16,7 @@ namespace PointOfSalesV2.Entities
         public string Name { get; set; }
 
         [ForeignKey("LocationId")]
-        public Location Location { get; set; }
+        public BranchOffice Location { get; set; }
 
     }
 }

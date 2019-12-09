@@ -7,14 +7,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PointOfSalesV2.Entities
 { 
-    public class LocationProduts
+    public class BranchOfficeProduts
 
     {
 
 
         public long LocationId { get; set; }
         [ForeignKey("LocationId")]
-        public Location Location { get; set; }
+        public BranchOffice Location { get; set; }
         public List<WarehouseProduct> ProductsByWarehouse { get; set; }
 
     }

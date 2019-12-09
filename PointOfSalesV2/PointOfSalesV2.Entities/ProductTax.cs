@@ -40,6 +40,9 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("TaxId")]
         public Tax Tax { get; set; }
 
+        [ForeignKey("ProductId")]
+        public Product Product { get; set; }
+
 
     }
 }

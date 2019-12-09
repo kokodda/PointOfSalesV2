@@ -113,7 +113,7 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
         [ForeignKey("LocationId")]
-        public Location Location { get; set; }
+        public BranchOffice Location { get; set; }
      
         public virtual  List<Payment> Payments { get; set; }
 

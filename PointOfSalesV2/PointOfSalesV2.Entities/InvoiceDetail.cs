@@ -145,6 +145,10 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("UnitId")]
         public Unit Unit { get; set; }
 
+
+        [ForeignKey("InvoiceId")]
+        public Invoice Invoice { get; set; }
+
         [NotMapped]
         public bool SaveRegister { get; set; } = true;
 

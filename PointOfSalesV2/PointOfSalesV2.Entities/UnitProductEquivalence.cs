@@ -57,6 +57,9 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("UnitId")]
         public Unit Unit { get; set; }
 
+        [ForeignKey("ProductId")]
+        public Product Product { get; set; }
+
 
 
     }

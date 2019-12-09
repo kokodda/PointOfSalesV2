@@ -49,7 +49,7 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("ProductId")]
         public Product Product { get; set; }
         [ForeignKey("LocationId")]
-        public Location Location { get; set; }
+        public BranchOffice Location { get; set; }
         [ForeignKey("WarehouseId")]
         public Warehouse Warehouse { get; set; }
 

@@ -14,7 +14,7 @@ namespace PointOfSalesV2.Entities
         public Invoice Invoice { get; set; }
 
 
-        public List<ReturnDetail> ReturnDetails { get; set; }
+        public List<CustomerReturnDetail> ReturnDetails { get; set; }
 
 
 

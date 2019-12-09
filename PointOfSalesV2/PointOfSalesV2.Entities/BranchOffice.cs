@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PointOfSalesV2.Entities
 {
-    public class Location : CommonData
+    public class BranchOffice : CommonData
     {
         public decimal Rate { get; set; }
         public string Name { get; set; }

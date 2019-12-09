@@ -58,7 +58,7 @@ namespace PointOfSalesV2.Entities
         public decimal OutstandingAmount { get; set; }
         public string Sequence { get; set; }
         public string CheckbookNumber { get; set; }
-        public int? SellerId { get; set; }
+        public long? SellerId { get; set; }
 
         public string Details { get; set; }
 

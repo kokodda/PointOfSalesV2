@@ -8,40 +8,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PointOfSalesV2.Entities
 {
-    public class ReturnDetail : InvoiceDetail
+    public class ReturnDetail : CommonData
     {
         public ReturnDetail() { }
 
         public ReturnDetail(ReturnDetail newDetail)
         {
             this.Id = newDetail.Id;
-            this.ProductId = newDetail.ProductId;
-            this.Product = newDetail.Product ?? null;
-            this.Active = newDetail.Active;
-            this.WarehouseId = newDetail.WarehouseId ?? null;
-            this.Quantity = newDetail.Quantity;
-            this.Comments = newDetail.Comments;
-            this.CreatedBy = newDetail.CreatedBy;
-            this.InvoiceId = newDetail.InvoiceId;
-            this.Date = newDetail.Date;
-            this.CreatedDate = newDetail.CreatedDate;
-            this.ModifiedDate = newDetail.ModifiedDate;
-            this.ModifiedBy = newDetail.ModifiedBy;
-            this.Amount = newDetail.Amount;
-            this.PrincipalCurrencyAmount = newDetail.PrincipalCurrencyAmount;
-            this.BeforeTaxesAmount = newDetail.BeforeTaxesAmount;
-            this.TaxesAmount = newDetail.TaxesAmount;
-            this.TotalAmount = newDetail.TotalAmount;
-            this.Unit = newDetail.Unit ?? null;
-            this.UnitId = newDetail.UnitId ?? null;
-            this.DiscountAmount = newDetail.DiscountAmount;
-            this.CreditNoteAmount = newDetail.CreditNoteAmount;
-            this.ParentId = newDetail.ParentId;
-            this.SaveRegister = newDetail.SaveRegister;
-            this.DiscountRate = newDetail.DiscountRate;
-            this.Free = newDetail.Free;
-            this.SellerRate = newDetail.SellerRate;
-            this.Cost = newDetail.Cost;
+           
         }
 
 

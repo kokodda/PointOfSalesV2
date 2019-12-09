@@ -18,6 +18,6 @@ namespace PointOfSalesV2.Entities
 
         public List<WarehouseProduct> Products { get; set; }
         [ForeignKey("LocationId")]
-        public Location Location { get; set; }
+        public BranchOffice Location { get; set; }
     }
 }
