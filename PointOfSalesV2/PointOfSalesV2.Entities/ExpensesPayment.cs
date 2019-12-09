@@ -31,15 +31,15 @@ namespace PointOfSalesV2.Entities
             this.PaymentTypeId = PaymentTypeId;
             this.CurrentOutstandingAmount = CurrentOutstandingAmount;
         }
-        public int SupplierId { get; set; }
+        public long SupplierId { get; set; }
 
 
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }
-        public int CurrencyId { get; set; }
-        public int ExpenseCurrencyId { get; set; }
+        public long CurrencyId { get; set; }
+        public long ExpenseCurrencyId { get; set; }
 
-        public int PaymentTypeId { get; set; }
+        public long PaymentTypeId { get; set; }
         public string ExpenseReference { get; set; }
         public decimal ExchangeRate { get; set; }
         public decimal OutstandingAmount { get; set; }

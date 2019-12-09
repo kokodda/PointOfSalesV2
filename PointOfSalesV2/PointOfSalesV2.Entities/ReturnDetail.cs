@@ -38,9 +38,9 @@ namespace PointOfSalesV2.Entities
             this.CreditNoteAmount = newDetail.CreditNoteAmount;
             this.ParentId = newDetail.ParentId;
             this.SaveRegister = newDetail.SaveRegister;
-            this.DiscountPercentage = newDetail.DiscountPercentage;
+            this.DiscountRate = newDetail.DiscountRate;
             this.Free = newDetail.Free;
-            this.SellerPercentage = newDetail.SellerPercentage;
+            this.SellerRate = newDetail.SellerRate;
             this.Cost = newDetail.Cost;
         }
 
@@ -50,7 +50,7 @@ namespace PointOfSalesV2.Entities
         {
             return (this.Id == other.Id && this.ProductId == other.ProductId && this.Quantity == other.Quantity && this.Amount == other.Amount && this.Cost == other.Cost &&
                 this.UnitId == other.UnitId && this.TaxesAmount == other.TaxesAmount && this.BeforeTaxesAmount == other.BeforeTaxesAmount && this.TotalAmount == other.TotalAmount &&
-                this.InvoiceId == other.InvoiceId && this.CreditNoteAmount == other.CreditNoteAmount && this.DiscountAmount == other.DiscountAmount && this.DiscountPercentage == other.DiscountPercentage
+                this.InvoiceId == other.InvoiceId && this.CreditNoteAmount == other.CreditNoteAmount && this.DiscountAmount == other.DiscountAmount && this.DiscountRate == other.DiscountRate
                 && this.Free == other.Free && this.ParentId == other.ParentId && this.WarehouseId == other.WarehouseId &&
                 this.Active == other.Active && this.Date == other.Date && this.CreatedDate == other.CreatedDate);
         }
@@ -93,7 +93,7 @@ namespace PointOfSalesV2.Entities
                 var hashCodeDecimal7 = this.CreditNoteAmount.GetHashCode();
                 hashCode = hashCode ^ hashCodeDecimal7;
 
-                var hashCodeDecimal8 = this.DiscountPercentage.GetHashCode();
+                var hashCodeDecimal8 = this.DiscountRate.GetHashCode();
                 hashCode = hashCode ^ hashCodeDecimal8;
 
                 var hashCodeDecimal9 = this.Cost.GetHashCode();

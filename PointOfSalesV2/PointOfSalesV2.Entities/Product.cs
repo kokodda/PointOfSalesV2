@@ -23,9 +23,9 @@ namespace PointOfSalesV2.Entities
         public bool IsCompositeProduct { get; set; }
 
         public decimal Cost { get; set; }
-        public decimal SellerPercentage { get; set; } = 0;
+        public decimal SellerRate { get; set; } = 0;
 
-        public int CurrencyId { get; set; }
+        public long CurrencyId { get; set; }
         public decimal Existence { get; set; }
       
         public string Name { get; set; }

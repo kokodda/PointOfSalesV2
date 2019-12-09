@@ -14,7 +14,7 @@ namespace PointOfSalesV2.Entities
         public CustomerPayment() { }
 
         public CustomerPayment(long CustomerId, long CurrencyId, long InvoiceCurrencyId, long PaymentTypeId, decimal TotalAmount, decimal PaidAmount, string InvoiceNumber, decimal ExchangeRate, decimal OutstandingAmount,
-            string Sequence, string Details, DateTime CreatedDate, Guid CreatedBy, bool Active, decimal CurrentOutstandingAmount, string CheckbookNumber, decimal SellerPercentage = 0, int? SellerId = null)
+            string Sequence, string Details, DateTime CreatedDate, Guid CreatedBy, bool Active, decimal CurrentOutstandingAmount, string CheckbookNumber, decimal SellerRate = 0, int? SellerId = null)
         {
             this.Active = Active;
             this.CustomerId = CustomerId;
@@ -32,7 +32,7 @@ namespace PointOfSalesV2.Entities
             this.PaymentTypeId = PaymentTypeId;
             this.CurrentOutstandingAmount = CurrentOutstandingAmount;
             this.CheckbookNumber = CheckbookNumber;
-            this.SellerPercentage = SellerPercentage;
+            this.SellerRate = SellerRate;
             this.SellerId = SellerId;
         }
         public long CustomerId { get; set; }
@@ -48,7 +48,7 @@ namespace PointOfSalesV2.Entities
 
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }
-        public decimal SellerPercentage { get; set; } = 0;
+        public decimal SellerRate { get; set; } = 0;
         public long CurrencyId { get; set; }
         public long InvoiceCurrencyId { get; set; }
 

@@ -43,7 +43,7 @@ namespace PointOfSalesV2.Entities
             this.DiscountAmount = nuevaInvoice.DiscountAmount;
             this.AppliedCreditNoteAmount = nuevaInvoice.AppliedCreditNoteAmount;
             this.Details = nuevaInvoice.Details;
-            this.DiscountPercentage = nuevaInvoice.DiscountPercentage;
+            this.DiscountRate = nuevaInvoice.DiscountRate;
             this.TRN = nuevaInvoice.TRN;
             this.TRNType = nuevaInvoice.TRNType;
             this.TNRControl = nuevaInvoice.TNRControl ?? null;
@@ -51,7 +51,7 @@ namespace PointOfSalesV2.Entities
             this.NRC = nuevaInvoice.NRC;
             this.DocumentNumber = nuevaInvoice.DocumentNumber ?? null;
             this.CajaId = nuevaInvoice.CajaId ?? null;
-            this.SellerPercentage = nuevaInvoice.SellerPercentage;
+            this.SellerRate = nuevaInvoice.SellerRate;
             this.SellerId = nuevaInvoice.SellerId ?? null;
             this.ZoneId = nuevaInvoice.ZoneId;
             this.Cost = nuevaInvoice.Cost;
@@ -61,11 +61,11 @@ namespace PointOfSalesV2.Entities
 
         public long ZoneId { get; set; }
         public string DocumentNumber { get; set; }
-        public decimal DiscountPercentage { get; set; }
+        public decimal DiscountRate { get; set; }
         public long? SellerId { get; set; }
 
         public long WarehouseId { get; set; }
-        public decimal SellerPercentage { get; set; } = 0;
+        public decimal SellerRate { get; set; } = 0;
         public long? CajaId { get; set; }
 
 

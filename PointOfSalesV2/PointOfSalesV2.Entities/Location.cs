@@ -9,7 +9,7 @@ namespace PointOfSalesV2.Entities
 {
     public class Location : CommonData
     {
-        public decimal Percentage { get; set; }
+        public decimal Rate { get; set; }
         public string Name { get; set; }
 
 
