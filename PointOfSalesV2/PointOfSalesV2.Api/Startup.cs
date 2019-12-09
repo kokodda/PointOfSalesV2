@@ -1,15 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.AspNet.OData.Query;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.Edm;
+using PointOfSalesV2.Entities;
+using PointOfSalesV2.Entities.Model;
+using PointOfSalesV2.Repository;
+using System;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace PointOfSalesV2.Api
 {
@@ -21,31 +32,102 @@ namespace PointOfSalesV2.Api
         }
 
         public IConfiguration Configuration { get; }
+        public Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddMemoryCache();
+            var appSettings = Configuration.GetSection("AppSettings").Get<AppSettings>();
+            var connections = Configuration.GetSection("ConnectionStrings").Get<ConnectionStrings>();
+            services.AddDbContext<MainDataContext>(options =>
+            {
+                var connection = new SqlConnection(connections.Main);
+                options.UseSqlServer(connection);
+
+            });
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddSingleton<IWebHostEnvironment>(hostingEnvironment);
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IFileProvider>(
+               new PhysicalFileProvider(
+                   Path.Combine(Directory.GetCurrentDirectory(), "")));
+
+
+            //services.AddScoped<IParqueoRepository, ParqueoRepository>();
+            //services.AddScoped<IStockRepository, StockRepository>();
+
+            //services.AddScoped<IDataRepositoriesFactory, DataRepositoriesFactory>();
+
+            //  New instance for injection
+            services.AddTransient(typeof(IBase<>), typeof(Repository<>));
+            // Add Culture
+            var cultureInfo = new CultureInfo("es-DO");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+             options.TokenValidationParameters = new TokenValidationParameters
+             {
+                 ValidateIssuer = true,
+                 ValidateAudience = true,
+                 ValidateLifetime = true,
+                 ValidateIssuerSigningKey = true,
+                 ValidIssuer = appSettings.Domain,
+                 ValidAudience = appSettings.Domain,
+                 IssuerSigningKey = new SymmetricSecurityKey(
+                 Encoding.UTF8.GetBytes(appSettings.TokenKey)),
+                 ClockSkew = TimeSpan.Zero
+             });
+
+            services.AddOData();
+            services.AddMvc().AddXmlSerializerFormatters();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseAuthentication();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
+            app.UseMvc(routes =>
             {
-                endpoints.MapControllers();
+
+                routes.Select().Expand().Filter().OrderBy().MaxTop(null).Count();
+                routes.MapODataServiceRoute("odata", "odata", GetEdmModel(app));
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
             });
+            app.UseMvc(routeBuilder => routeBuilder.EnableDependencyInjection());
+
+        
+        }
+
+        private static IEdmModel GetEdmModel(IApplicationBuilder app)
+        {
+         ODataConventionModelBuilder builder = new ODataConventionModelBuilder(app.ApplicationServices);
+            builder.EntitySet<Invoice>("Invoices");
+            builder.EntitySet<InvoiceDetail>("InvoiceDetails");
+            builder.EntitySet<Product>("Products").EntityType.HasKey(p => p.Id)
+               .Filter(QueryOptionSetting.Allowed);
+            //builder.EntitySet<Stock>("Stocks");
+            //builder.EntitySet<User>("Users");
+            return builder.GetEdmModel();
         }
     }
 }
