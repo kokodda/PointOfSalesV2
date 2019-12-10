@@ -71,7 +71,7 @@ namespace PointOfSalesV2.Entities
         public Currency Currency { get; set; }
 
         [ForeignKey("SupplierId")]
-        public Supplieres Supplier { get; set; }
+        public Supplier Supplier { get; set; }
 
         [NotMapped]
         public long NumberOfDays

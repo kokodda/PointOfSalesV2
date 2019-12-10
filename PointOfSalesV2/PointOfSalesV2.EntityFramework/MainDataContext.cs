@@ -42,7 +42,7 @@ public class MainDataContext : DbContext
     public virtual DbSet<BranchOffice> BranchOffices { get; set; }
     public virtual DbSet<MovementType> MovementTypes { get; set; }
     public virtual DbSet<OpeningAmount> OpeningsAmounts { get; set; }
-    public virtual DbSet<PaymentDetail> PaymentsDetails { get; set; }
+    public virtual DbSet<Payment> Payments { get; set; }
     public virtual DbSet<PaymentType> PaymentTypes { get; set; }
     public virtual DbSet<Product> Products { get; set; }
     public virtual DbSet<ProductTax> ProductTaxes { get; set; }
@@ -57,7 +57,7 @@ public class MainDataContext : DbContext
     public virtual DbSet<UnitProductEquivalence> UnitProductsEquivalences { get; set; }
     public virtual DbSet<Warehouse> Warehouses { get; set; }
     public virtual DbSet<WarehouseMovement> WarehousesMovements { get; set; }
-    public virtual DbSet<WarehouseProduct> WarehousesProducts { get; set; }
+    public virtual DbSet<Inventory> Inventory { get; set; }
     public virtual DbSet<WarehouseTransfer> WarehousesTransfers { get; set; }
     public virtual DbSet<Zone> Zones { get; set; }
 

@@ -3,16 +3,16 @@
 using Microsoft.AspNet.OData.Builder;
 using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNet.OData.Query;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
+using Newtonsoft.Json.Serialization;
 using PointOfSalesV2.Entities;
 using PointOfSalesV2.Entities.Model;
 using PointOfSalesV2.Repository;
@@ -21,6 +21,10 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+//using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 namespace PointOfSalesV2.Api
 {
@@ -32,7 +36,6 @@ namespace PointOfSalesV2.Api
         }
 
         public IConfiguration Configuration { get; }
-        public Microsoft.AspNetCore.Hosting.IWebHostEnvironment hostingEnvironment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -47,7 +50,6 @@ namespace PointOfSalesV2.Api
 
             });
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-            services.AddSingleton<IWebHostEnvironment>(hostingEnvironment);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IFileProvider>(
                new PhysicalFileProvider(
@@ -57,9 +59,10 @@ namespace PointOfSalesV2.Api
             //services.AddScoped<IParqueoRepository, ParqueoRepository>();
             //services.AddScoped<IStockRepository, StockRepository>();
 
-            //services.AddScoped<IDataRepositoriesFactory, DataRepositoriesFactory>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDataRepositoryFactory, DataRepositoriesFactory>();
 
-            //  New instance for injection
+            //New instance for injection
             services.AddTransient(typeof(IBase<>), typeof(Repository<>));
             // Add Culture
             var cultureInfo = new CultureInfo("es-DO");
@@ -80,9 +83,28 @@ namespace PointOfSalesV2.Api
                  Encoding.UTF8.GetBytes(appSettings.TokenKey)),
                  ClockSkew = TimeSpan.Zero
              });
-
+            services.AddCors(o => o.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddOData();
             services.AddMvc().AddXmlSerializerFormatters();
+            //services.AddMvc().AddJsonOptions(opt =>
+            //{
+            //    opt.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            //    opt.SerializerSettings.DateFormatString = "dd/MM/yyyy";
+            //    opt.SerializerSettings.Culture = cultureInfo;
+            //});
+
+            //Esto para no terner que poner el attributo a cada metodo de controlado
+            //para que permita crosorgine [EnableCors("AllowAllOrigins")]
+            services.Configure<MvcOptions>(options =>
+            {
+                options.EnableEndpointRouting = false;
+              //  options.Filters.Add(new CorsAuthorizationFilterFactory("AllowAllOrigins"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,8 +122,7 @@ namespace PointOfSalesV2.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseCors("AllowAllOrigins");
             app.UseAuthentication();
 
             app.UseMvc(routes =>

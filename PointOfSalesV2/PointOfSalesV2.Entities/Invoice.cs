@@ -109,7 +109,7 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("ZoneId")]
         public Zone Zone { get; set; }
         [ForeignKey("TRNType")]
-        public TNRControl TNRControl { get; set; }
+        public TRNControl TNRControl { get; set; }
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
         [ForeignKey("LocationId")]

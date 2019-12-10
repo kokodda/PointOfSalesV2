@@ -80,18 +80,18 @@ namespace PointOfSalesV2.Entities
         public decimal SellingPrice { get; set; }
         public string BaseProductName { get; set; }
 
-        public bool Equals(BaseServicioCompuestoCustom other)
+        public bool Equals(CustomCompositeProduct other)
         {
             return (this.Id == other.Id && this.ProductId == other.ProductId &&
                 this.BaseProductId == other.BaseProductId &&
                ((this.BaseProductUnitId == other.BaseProductUnitId)) && this.Quantity == other.Quantity);
         }
 
-        public override long GetHashCode()
+        public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = 13;
+                long hashCode = 13;
                 hashCode = (hashCode * 397) ^ this.Id;
                 hashCode = (hashCode * 397) ^ this.ProductId;
                 hashCode = (hashCode * 397) ^ this.BaseProductId;
@@ -99,7 +99,7 @@ namespace PointOfSalesV2.Entities
 
                 var hashCodeDecimal = this.Quantity.GetHashCode();
                 hashCode = hashCode ^ hashCodeDecimal;
-                return hashCode;
+                return Convert.ToInt32( hashCode);
             }
         }
     }

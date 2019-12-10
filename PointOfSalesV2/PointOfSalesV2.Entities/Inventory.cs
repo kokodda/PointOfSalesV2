@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PointOfSalesV2.Entities
 {
-    public class WarehouseProduct : CommonData
+    public class Inventory : CommonData
     {
         public long WarehouseId { get; set; }
 

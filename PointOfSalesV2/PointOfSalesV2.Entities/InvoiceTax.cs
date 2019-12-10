@@ -47,7 +47,7 @@ namespace PointOfSalesV2.Entities
                 var hashCodeDecimal = this.MontoTax.GetHashCode();
                 hashCode = hashCode ^ hashCodeDecimal;
 
-                return hashCode;
+                return Convert.ToInt32( hashCode);
             }
         }
     }
