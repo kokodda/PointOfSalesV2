@@ -43,7 +43,7 @@ namespace PointOfSalesV2.Entities
 
         [MaxLength(15)]
         [DataMember]
-        public string Movil { get; set; }
+        public string Mobile { get; set; }
 
         [MaxLength(200)]
         [DataMember]
@@ -74,15 +74,28 @@ namespace PointOfSalesV2.Entities
 
         public double? Size { get; set; }
 
+        public long? BranchOfficeId { get; set; }
+        public long? CashRegisterId { get; set; }
+        public long? WarehouseId { get; set; }
+        public int CashRegisterOpenningTimeHours { get; set; }
 
 
 
         [NotMapped]
-        public string FullName => Name + "  " + LastName;
+        public string FullName => $"{Name}  {LastName}";
 
         public virtual char Gender { get; set; }
 
-       
+        [ForeignKey("BranchOfficeId")]
+        public virtual BranchOffice BranchOffice { get; set; }
+        [ForeignKey("CashRegisterId")]
+        public virtual CashRegister CashRegister { get; set; }
+        [ForeignKey("WarehouseId")]
+        public virtual Warehouse Warehouse { get; set; }
+
+        public virtual IEnumerable<UserClaims> Claims { get; set; }
+
+        public virtual IEnumerable<UserRole> Roles { get; set; }
 
       
     }
