@@ -7,6 +7,7 @@ using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using PointOfSalesV2.Api.Security;
 using PointOfSalesV2.Entities;
 using PointOfSalesV2.Entities.Model;
 using PointOfSalesV2.Repository;
@@ -14,6 +15,7 @@ using PointOfSalesV2.Repository;
 namespace PointOfSalesV2.Api.Controllers
 {
     [Route("api/[controller]")]
+    [ControllerAuthorize]
     public class BaseController<T> : ODataController where T : class, ICommonData, new()
     {
         protected readonly IDataRepositoryFactory _repositoryFactory;
@@ -27,6 +29,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpGet]
+        [ActionAuthorize("ReadAll")]
         [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
         public virtual IEnumerable<T> Get()
         {
@@ -45,6 +48,7 @@ namespace PointOfSalesV2.Api.Controllers
 
         [HttpGet("{id:long}")]
         [EnableQuery]
+        [ActionAuthorize("Read")]
         public virtual IActionResult Get(long id)
         {
             try
@@ -61,6 +65,7 @@ namespace PointOfSalesV2.Api.Controllers
 
         [HttpGet("{number:int}/{size:int}")]
         [EnableQuery]
+        [ActionAuthorize("ReadPaged")]
         public virtual IActionResult Get(int number, int size)
         {
             try
@@ -80,6 +85,7 @@ namespace PointOfSalesV2.Api.Controllers
 
 
         [HttpPost]
+        [ActionAuthorize("Add")]
         public virtual IActionResult Post([FromBody] T model)
         {
             try
@@ -103,6 +109,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpPut]
+        [ActionAuthorize("Update")]
         public virtual IActionResult Put([FromBody] T model)
         {
             try
@@ -119,6 +126,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpDelete("{id:long}")]
+        [ActionAuthorize("Delete")]
         public virtual IActionResult Delete(long id)
         {
             try

@@ -95,7 +95,7 @@ namespace PointOfSalesV2.Entities
 
         public virtual IEnumerable<UserClaims> Claims { get; set; }
 
-        public virtual IEnumerable<UserRole> Roles { get; set; }
+        public virtual IEnumerable<UserOperation> Permissions { get; set; }
 
       
     }
