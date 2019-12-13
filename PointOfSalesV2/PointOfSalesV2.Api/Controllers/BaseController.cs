@@ -15,8 +15,8 @@ using PointOfSalesV2.Repository;
 namespace PointOfSalesV2.Api.Controllers
 {
     [Route("api/[controller]")]
-   // [ControllerAuthorize]
-    public class BaseController<T> : ODataController where T : class, ICommonData, new()
+    // [ControllerAuthorize]       ODataController
+    public class BaseController<T> : ControllerBase where T : class, ICommonData, new()
     {
         protected readonly IDataRepositoryFactory _repositoryFactory;
         protected readonly IOptions<AppSettings> _appSettings;
@@ -30,7 +30,7 @@ namespace PointOfSalesV2.Api.Controllers
 
         [HttpGet]
      //   [ActionAuthorize("ReadAll")]
-        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
+        //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
         public virtual IEnumerable<T> Get()
         {
             try
@@ -47,7 +47,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpGet("{id:long}")]
-        [EnableQuery]
+       //[EnableQuery]
         [ActionAuthorize("Read")]
         public virtual IActionResult Get(long id)
         {
@@ -64,7 +64,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpGet("{number:int}/{size:int}")]
-        [EnableQuery]
+       // [EnableQuery]
         [ActionAuthorize("ReadPaged")]
         public virtual IActionResult Get(int number, int size)
         {
