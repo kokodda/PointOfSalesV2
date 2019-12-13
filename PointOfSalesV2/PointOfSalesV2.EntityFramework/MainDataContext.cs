@@ -35,6 +35,7 @@ public class MainDataContext : DbContext
     public virtual DbSet<CustomerReturnDetail> CustomersReturnDetails { get; set; }
     public virtual DbSet<Expense> Expenses { get; set; }
     public virtual DbSet<ExpenseTax> ExpenseTaxes { get; set; }
+    public virtual DbSet<ExpensesPayment> ExpensesPayments { get; set; }
     public virtual DbSet<InventoryEntry> InventoryEntries { get; set; }
     public virtual DbSet<Invoice> Invoices { get; set; }
     public virtual DbSet<InvoiceDetail> InvoicesDetails{ get; set; }
@@ -44,6 +45,7 @@ public class MainDataContext : DbContext
     public virtual DbSet<OpeningAmount> OpeningsAmounts { get; set; }
     public virtual DbSet<Payment> Payments { get; set; }
     public virtual DbSet<PaymentType> PaymentTypes { get; set; }
+    public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
     public virtual DbSet<Product> Products { get; set; }
     public virtual DbSet<ProductTax> ProductTaxes { get; set; }
     public virtual DbSet<ReturnDetail> ReturnDetails { get; set; }
@@ -60,6 +62,18 @@ public class MainDataContext : DbContext
     public virtual DbSet<Inventory> Inventory { get; set; }
     public virtual DbSet<WarehouseTransfer> WarehousesTransfers { get; set; }
     public virtual DbSet<Zone> Zones { get; set; }
+
+    public virtual DbSet<Section> Sections { get; set; }
+    public virtual DbSet<SectionOperation> SectionOperations { get; set; }
+    public virtual DbSet<Operation> Operations { get; set; }
+    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<RoleSection> RoleSections { get; set; }
+    public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<UserClaims> UsersClaims { get; set; }
+
+    public virtual DbSet<UserRole> UserRoles { get; set; }
+
+
 
 
     #endregion
@@ -96,7 +110,7 @@ public class MainDataContext : DbContext
         .WithOne(d => d.Product).OnDelete(DeleteBehavior.Restrict);
 
 
-        base.OnModelCreating(modelBuilder);
+
 
         foreach (var property in modelBuilder.Model.GetEntityTypes()
           .SelectMany(t => t.GetProperties())
@@ -111,7 +125,7 @@ public class MainDataContext : DbContext
         foreach (var fk in cascadeFKs)
             fk.DeleteBehavior = DeleteBehavior.Restrict;
 
-
+        base.OnModelCreating(modelBuilder);
     }
 
     #endregion

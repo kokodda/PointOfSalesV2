@@ -89,7 +89,7 @@ namespace PointOfSalesV2.Api
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
-            services.AddOData();
+           // services.AddOData();
             services.AddMvc().AddXmlSerializerFormatters();
             //services.AddMvc().AddJsonOptions(opt =>
             //{
@@ -128,13 +128,13 @@ namespace PointOfSalesV2.Api
             app.UseMvc(routes =>
             {
 
-                routes.Select().Expand().Filter().OrderBy().MaxTop(null).Count();
-                routes.MapODataServiceRoute("odata", "odata", GetEdmModel(app));
+                //    routes.Select().Expand().Filter().OrderBy().MaxTop(null).Count();
+                //    routes.MapODataServiceRoute("odata", "odata", GetEdmModel(app));
                 routes.MapRoute(
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
-            app.UseMvc(routeBuilder => routeBuilder.EnableDependencyInjection());
+            //app.UseMvc(routeBuilder => routeBuilder.EnableDependencyInjection());
 
         
         }

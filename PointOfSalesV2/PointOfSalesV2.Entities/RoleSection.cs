@@ -12,7 +12,7 @@ namespace PointOfSalesV2.Entities
     {
         public long RoleId { get; set; }
         public string JsonData { get; set; } = "[]";
-
+        [NotMapped]
         public List<RoleSectionData> Permissions
         {
             get

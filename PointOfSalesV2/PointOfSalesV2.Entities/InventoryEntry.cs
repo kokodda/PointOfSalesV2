@@ -27,7 +27,7 @@ namespace PointOfSalesV2.Entities
 
         [ForeignKey("SupplierId")]
         public Supplier Supplier { get; set; }
-        [ForeignKey("Product")]
+        [ForeignKey("ProductId")]
         public Product Product { get; set; }
         [ForeignKey("WarehouseId")]
         public Warehouse Warehouse { get; set; }

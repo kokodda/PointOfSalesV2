@@ -9,13 +9,23 @@ using System.Runtime.Serialization;
 
 namespace PointOfSalesV2.Entities
 {
-    public class User : CommonData
+    public class User : ICommonData
     {
-        [NotMapped]
-        public override long Id { get => base.Id; set => base.Id = value; }
+        
         [Key]
         public Guid UserId { get; set; }
-       
+
+        public virtual Guid CreatedBy { get; set; }
+        public virtual string CreatedByName { get; set; }
+
+        public virtual Guid? ModifiedBy { get; set; }
+        public virtual string ModifiedByName { get; set; }
+        public virtual DateTime CreatedDate { get; set; }
+
+        public virtual DateTime? ModifiedDate { get; set; }
+
+
+        public virtual bool Active { get; set; }
 
         [NotMapped]
         public string TokenKey { get; set; }
@@ -96,7 +106,7 @@ namespace PointOfSalesV2.Entities
         public virtual IEnumerable<UserClaims> Claims { get; set; }
 
         public virtual IEnumerable<UserOperation> Permissions { get; set; }
-
-      
+       [NotMapped]
+        public long Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

@@ -15,7 +15,7 @@ using PointOfSalesV2.Repository;
 namespace PointOfSalesV2.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ControllerAuthorize]
+   // [ControllerAuthorize]
     public class BaseController<T> : ODataController where T : class, ICommonData, new()
     {
         protected readonly IDataRepositoryFactory _repositoryFactory;
@@ -29,7 +29,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpGet]
-        [ActionAuthorize("ReadAll")]
+     //   [ActionAuthorize("ReadAll")]
         [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
         public virtual IEnumerable<T> Get()
         {

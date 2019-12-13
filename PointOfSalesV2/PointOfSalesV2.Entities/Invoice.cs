@@ -90,6 +90,7 @@ namespace PointOfSalesV2.Entities
         public decimal TotalAmount { get; set; }
         public string TRN { get; set; }
         public string TRNType { get; set; }
+        public long TRNControlId { get; set; }
         public decimal PaidAmount { get; set; }
 
         public char State { get; set; }
@@ -108,7 +109,7 @@ namespace PointOfSalesV2.Entities
         public Seller Seller { get; set; }
         [ForeignKey("ZoneId")]
         public Zone Zone { get; set; }
-        [ForeignKey("TRNType")]
+        [ForeignKey("TRNControlId")]
         public TRNControl TNRControl { get; set; }
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }

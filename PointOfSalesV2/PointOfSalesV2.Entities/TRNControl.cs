@@ -11,6 +11,7 @@ namespace PointOfSalesV2.Entities
     public class TRNControl : CommonData
     {
         public string Series { get; set; }
+        
         public string Type { get; set; }
         public long Sequence { get; set; }
         public long NumericControl { get; set; }

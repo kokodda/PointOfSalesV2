@@ -34,7 +34,7 @@ namespace PointOfSalesV2.Entities
             this.SellerPercentage = SellerPercentage;
             this.SellerId = SellerId;
         }
-        public int CustomerId { get; set; }
+        public long CustomerId { get; set; }
         [NotMapped]
         public int DaysCount
         {
@@ -48,16 +48,16 @@ namespace PointOfSalesV2.Entities
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }
         public decimal SellerPercentage { get; set; } = 0;
-        public int CurrencyId { get; set; }
-        public int InvoiceCurrencyId { get; set; }
+        public long CurrencyId { get; set; }
+        public long InvoiceCurrencyId { get; set; }
 
-        public int PaymentTypeId { get; set; }
+        public long PaymentTypeId { get; set; }
         public string InvoiceNumber { get; set; }
         public decimal ExchangeRate { get; set; }
         public decimal OwedAmount { get; set; }
         public string Sequence { get; set; }
         public string ReceiptNumber { get; set; }
-        public int? SellerId { get; set; }
+        public long? SellerId { get; set; }
 
 
 
