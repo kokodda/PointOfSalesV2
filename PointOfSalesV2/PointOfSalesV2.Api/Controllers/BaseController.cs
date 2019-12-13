@@ -14,9 +14,9 @@ using PointOfSalesV2.Repository;
 
 namespace PointOfSalesV2.Api.Controllers
 {
-    [Route("api/[controller]")]
+
     // [ControllerAuthorize]       ODataController
-    public class BaseController<T> : ControllerBase where T : class, ICommonData, new()
+    public abstract class BaseController<T> : ControllerBase where T : class, ICommonData, new()
     {
         protected readonly IDataRepositoryFactory _repositoryFactory;
         protected readonly IOptions<AppSettings> _appSettings;
