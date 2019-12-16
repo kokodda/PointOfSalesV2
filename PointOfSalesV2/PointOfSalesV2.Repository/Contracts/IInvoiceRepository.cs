@@ -10,7 +10,8 @@ namespace PointOfSalesV2.Repository
         IEnumerable<Invoice> GetAccountsReceivable(DateTime? startDate, DateTime? endDate, Nullable<long> customerId, Nullable<long> currencyId, long? sellerId);
         IEnumerable<Invoice> GetSales(DateTime? startDate, DateTime? endDate, Nullable<long> customerId, Nullable<long> currencyId, Nullable<long> sellerId);
         Invoice GetByInvoiceNumber(string invoiceNumber);
-        PagedList<Invoice>
-    
+        PagedList<Invoice> GetPagedQuotes(int page, int size);
+        IEnumerable<object> GetAccountStatus(DateTime? startDate, DateTime? endDate, long? customerId, long? currencyId);
+
     }
 }

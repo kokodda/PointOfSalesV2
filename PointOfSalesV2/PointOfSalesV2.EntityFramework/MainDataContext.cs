@@ -51,6 +51,7 @@ public class MainDataContext : DbContext
     public virtual DbSet<ReturnDetail> ReturnDetails { get; set; }
     public virtual DbSet<Seller> Sellers { get; set; }
     public virtual DbSet<SequenceControl> SequencesControl { get; set; }
+    public virtual DbSet<SupplierReturn> SuppliersReturns { get; set; }
     public virtual DbSet<Supplier> Suppliers { get; set; }
     public virtual DbSet<SupplierBalance> SuppliersBalances { get; set; }
     public virtual DbSet<Tax> Taxes { get; set; }
