@@ -97,7 +97,7 @@ namespace PointOfSalesV2.Repository
         public override Result<CustomerPayment> Remove(long id)
         {
             Result<CustomerPayment> result = new Result<CustomerPayment>(-1, -1, "error_msg");
-            using (var transaction = _Context.Database.BeginTransaction()) 
+            using (var transaction = _Context.Database.BeginTransaction())
             {
                 try
                 {
@@ -106,7 +106,7 @@ namespace PointOfSalesV2.Repository
                         return new Result<CustomerPayment>(-1, -1, "paymentNotValid_msg");
                     obj.Active = false;
 
-                    Invoice invoice = _Context.Invoices.FirstOrDefault(x=>x.Active==true && x.InvoiceNumber==obj.InvoiceNumber);
+                    Invoice invoice = _Context.Invoices.FirstOrDefault(x => x.Active == true && x.InvoiceNumber == obj.InvoiceNumber);
 
                     invoice.PaidAmount -= obj.PaidAmount;
                     invoice.PaidAmount = invoice.PaidAmount < 0 ? 0 : invoice.PaidAmount;
@@ -123,7 +123,7 @@ namespace PointOfSalesV2.Repository
                         _Context.CustomersBalance.Update(customerBalance);
                         _Context.SaveChanges();
                     }
-                   // obj.ModificadoPor = userNamer;
+                    // obj.ModificadoPor = userNamer;
                     obj.ModifiedDate = DateTime.Now;
                     _Context.CustomersPayments.Update(obj);
                     _Context.SaveChanges();
@@ -141,7 +141,48 @@ namespace PointOfSalesV2.Repository
         }
         public override Result<CustomerPayment> Remove(CustomerPayment entity)
         {
-            return base.Remove(entity);
+            Result<CustomerPayment> result = new Result<CustomerPayment>(-1, -1, "error_msg");
+            using (var transaction = _Context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var obj = this.Get(entity.Id).Data.FirstOrDefault();
+                    if (obj == null)
+                        return new Result<CustomerPayment>(-1, -1, "paymentNotValid_msg");
+                    obj.Active = false;
+
+                    Invoice invoice = _Context.Invoices.FirstOrDefault(x => x.Active == true && x.InvoiceNumber == obj.InvoiceNumber);
+
+                    invoice.PaidAmount -= obj.PaidAmount;
+                    invoice.PaidAmount = invoice.PaidAmount < 0 ? 0 : invoice.PaidAmount;
+                    invoice.OwedAmount += obj.PaidAmount;
+                    invoice.OwedAmount = invoice.OwedAmount > invoice.TotalAmount ? invoice.TotalAmount : invoice.OwedAmount;
+                    if (invoice.State != (char)Enums.BillingStates.Billed)
+                        invoice.State = (char)Enums.BillingStates.Billed;
+                    _Context.Invoices.Update(invoice);
+                    _Context.SaveChanges();
+                    CustomerBalance customerBalance = _Context.CustomersBalance.FirstOrDefault(x => x.Active == true && x.CustomerId == obj.CustomerId && x.CurrencyId == obj.CurrencyId);
+                    if (customerBalance != null)
+                    {
+                        customerBalance.OwedAmount += obj.PaidAmount;
+                        _Context.CustomersBalance.Update(customerBalance);
+                        _Context.SaveChanges();
+                    }
+                    // obj.ModificadoPor = userNamer;
+                    obj.ModifiedDate = DateTime.Now;
+                    _Context.CustomersPayments.Update(obj);
+                    _Context.SaveChanges();
+                    transaction.Commit();
+                    return new Result<CustomerPayment>(0, 0, "ok_msg", new List<CustomerPayment>() { obj });
+                }
+
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    result.Exception = ex;
+                    return result;
+                }
+            }
         }
 
         public override void AddRange(IEnumerable<CustomerPayment> entities)
