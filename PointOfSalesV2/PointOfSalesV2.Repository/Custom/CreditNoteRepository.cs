@@ -1,6 +1,7 @@
 ﻿using PointOfSalesV2.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PointOfSalesV2.Repository
@@ -13,7 +14,7 @@ namespace PointOfSalesV2.Repository
 
         public CreditNote GetBySequence(string sequence)
         {
-            throw new NotImplementedException();
+            return _Context.CreditNotes.FirstOrDefault(x => x.Active == true && x.Sequence == sequence);
         }
     }
 }

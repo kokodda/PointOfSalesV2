@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PointOfSalesV2.Common;
 
 namespace PointOfSalesV2.Entities
 {
@@ -101,6 +102,15 @@ namespace PointOfSalesV2.Entities
         public string Details { get; set; }
 
         public decimal BeforeTaxesAmount { get; set; }
+
+        [NotMapped]
+        public Enums.BillingStates BillingState 
+        {
+            get 
+            {
+                return  (Enums.BillingStates)this.State;
+            }
+        }
 
 
         [ForeignKey("CurrencyId")]

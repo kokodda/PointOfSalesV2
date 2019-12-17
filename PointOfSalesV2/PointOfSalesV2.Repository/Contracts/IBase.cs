@@ -15,21 +15,21 @@ namespace PointOfSalesV2.Repository
     public interface IBase<T> : IBase
       where T : class, ICommonData, new()
     {
-        T Add(T entity);
+        Result<T> Add(T entity);
         void AddRange(IEnumerable<T> entities);
 
-        void Remove(T entity);
+        Result<T> Remove(T entity);
 
-        void Remove(long id);
+        Result<T> Remove(long id);
 
-        T Update(T entity);
+        Result<T> Update(T entity);
 
-        IEnumerable<T> GetAll(string sortExpression = null);
+        Result<T> GetAll(string sortExpression = null);
 
         IPagedList<T> GetPaged(int startRowIndex, int pageSize, string sortExpression = null);
         PageResult<T> GetPagedNew(int startRowIndex, int pageSize, string sortExpression = null);
 
-        IEnumerable<T> GetAll(Func<IQueryable<T>, IQueryable<T>> transform, Expression<Func<T, bool>> filter = null, string sortExpression = null);
+        Result<T> GetAll(Func<IQueryable<T>, IQueryable<T>> transform, Expression<Func<T, bool>> filter = null, string sortExpression = null);
 
         IEnumerable<TResult> GetAll<TResult>(Func<IQueryable<T>, IQueryable<TResult>> transform, Expression<Func<T, bool>> filter = null, string sortExpression = null);
 
@@ -39,9 +39,9 @@ namespace PointOfSalesV2.Repository
 
         IPagedList<TResult> GetPaged<TResult>(Func<IQueryable<T>, IQueryable<TResult>> transform, Expression<Func<T, bool>> filter = null, int startRowIndex = -1, int pageSize = -1, string sortExpression = null);
 
-        T Get(long id);
+        Result<T> Get(long id);
 
-        T Get(Guid id);
+        Result<T> Get(Guid id);
 
         TResult Get<TResult>(Func<IQueryable<T>, IQueryable<TResult>> transform, Expression<Func<T, bool>> filter = null, string sortExpression = null);
 

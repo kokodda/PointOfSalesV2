@@ -12,7 +12,7 @@ namespace PointOfSalesV2.Entities
     {
         public long WarehouseId { get; set; }
 
-        public long locationId { get; set; }
+        public long BranchOfficeId { get; set; }
 
         public long ProductId { get; set; }
 

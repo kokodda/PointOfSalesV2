@@ -7,6 +7,6 @@ namespace PointOfSalesV2.Repository
 {
     public interface ICustomerBalanceRepository: IBase<CustomerBalance>
     {
-        IEnumerable<CustomerBalance> CustomerBalanceByCurrency(long customerId, long currencyId);
+        CustomerBalance CustomerBalanceByCurrency(long customerId, long currencyId);
     }
 }

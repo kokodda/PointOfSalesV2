@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace PointOfSalesV2.Repository
 {
@@ -13,22 +14,22 @@ namespace PointOfSalesV2.Repository
 
         public IEnumerable<InvoiceDetail> GetByInvoiceId(long invoiceId)
         {
-            throw new NotImplementedException();
+            return _Context.InvoicesDetails.Where(x => x.Active == true && x.InvoiceId == invoiceId);
         }
 
         public IEnumerable<InvoiceDetail> GetByProductId(long productId)
         {
-            throw new NotImplementedException();
+            return _Context.InvoicesDetails.Where(x => x.Active == true && x.ProductId == productId);
         }
 
         public IEnumerable<InvoiceDetail> GetChildren(long parentId)
         {
-            throw new NotImplementedException();
+            return _Context.InvoicesDetails.Where(x => x.Active == true && x.ParentId==parentId);
         }
 
         public IEnumerable<InvoiceDetail> GetInvoiceParentsDetails(long invoiceId)
         {
-            throw new NotImplementedException();
+            return _Context.InvoicesDetails.Where(x => x.Active == true && x.InvoiceId == invoiceId && x.ParentId==null);
         }
     }
 }

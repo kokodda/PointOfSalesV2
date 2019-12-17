@@ -12,6 +12,7 @@ namespace PointOfSalesV2.Entities
         public decimal Rate { get; set; }
         public string Name { get; set; }
 
+        public virtual IEnumerable<Warehouse> Warehouses { get; set; }
 
 
     }

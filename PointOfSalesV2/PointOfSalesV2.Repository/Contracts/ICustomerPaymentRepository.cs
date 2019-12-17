@@ -5,9 +5,9 @@ using System.Text;
 
 namespace PointOfSalesV2.Repository
 {
-    public interface IPaymentRepository: IBase<Payment>
+    public interface ICustomerPaymentRepository: IBase<CustomerPayment>
     {
-        Payment ApplyInvoicePayment(Payment payment);
+        CustomerPayment ApplyInvoicePayment(CustomerPayment payment);
         public object IncomesReport(object searchParams);
         public object CommisionsReport(object searchParams);
     }

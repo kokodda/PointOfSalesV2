@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PointOfSalesV2.Common\PointOfSalesV2.Common.csproj" />
     <ProjectReference Include="..\PointOfSalesV2.Entities\PointOfSalesV2.Entities.csproj" />
     <ProjectReference Include="..\PointOfSalesV2.EntityFramework\PointOfSalesV2.EntityFramework.csproj" />
   </ItemGroup>

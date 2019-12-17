@@ -22,8 +22,8 @@ namespace PointOfSalesV2.Entities
             this.Date = obj.Date;
             this.ModifiedDate = obj.ModifiedDate;
             this.Id = obj.Id;
-            this.Location = obj.Location ?? null;
-            this.LocationId = obj.LocationId;
+            this.BranchOffice = obj.BranchOffice ?? null;
+            this.BranchOfficeId = obj.BranchOfficeId;
             this.ModifiedBy = obj.ModifiedBy;
             this.Currency = obj.Currency ?? null;
             this.CurrencyId = obj.CurrencyId;
@@ -64,7 +64,7 @@ namespace PointOfSalesV2.Entities
         public decimal ReturnedAmount { get; set; }
         public decimal GivenAmount { get; set; }
         public decimal OwedAmount { get; set; }
-        public long LocationId { get; set; }
+        public long BranchOfficeId { get; set; }
         public string TRN { get; set; }
 
         [ForeignKey("CurrencyId")]
@@ -85,8 +85,8 @@ namespace PointOfSalesV2.Entities
             }
         }
 
-        [ForeignKey("LocationId")]
-        public BranchOffice Location { get; set; }
+        [ForeignKey("BranchOfficeId")]
+        public BranchOffice BranchOffice { get; set; }
 
     }
 }

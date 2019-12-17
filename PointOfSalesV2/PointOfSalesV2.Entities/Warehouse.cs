@@ -10,14 +10,14 @@ namespace PointOfSalesV2.Entities
 {
     public class Warehouse : CommonData
     {
-        public long LocationId { get; set; }
+        public long BranchOfficeId { get; set; }
 
         public string Code { get; set; }
 
         public string Name { get; set; }
 
         public List<Inventory> Inventory { get; set; }
-        [ForeignKey("LocationId")]
-        public BranchOffice Location { get; set; }
+        [ForeignKey("BranchOfficeId")]
+        public BranchOffice BranchOffice { get; set; }
     }
 }

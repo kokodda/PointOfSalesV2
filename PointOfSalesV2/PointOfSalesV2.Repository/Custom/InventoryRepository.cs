@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace PointOfSalesV2.Repository
 {
@@ -11,24 +12,27 @@ namespace PointOfSalesV2.Repository
         {
         }
 
-        public IEnumerable<Inventory> GetLocationInventory(long locationId, long? productId)
+        public IEnumerable<Inventory> GetBranchOfficeInventory(long branchOfficeId, long? productId)
         {
-            throw new NotImplementedException();
+            Func<Inventory, bool> func = inventory => inventory.Active == true && (productId.HasValue ? inventory.ProductId == productId.Value : inventory.Id > 0) &&
+            inventory.BranchOfficeId == branchOfficeId;
+
+            return _Context.Inventory.Where(func);
         }
 
         public IEnumerable<Inventory> GetProductInventory(long productId)
         {
-            throw new NotImplementedException();
+            return _Context.Inventory.Where(x=>x.Active==true && x.ProductId==productId);
         }
 
         public IEnumerable<Inventory> GetWarehouseInventory(long warehouseId)
         {
-            throw new NotImplementedException();
+            return _Context.Inventory.Where(x => x.Active == true && x.WarehouseId == warehouseId);
         }
 
         public IEnumerable<Inventory> GetWarehouseInventoryByProduct(long warehouseId, long productId)
         {
-            throw new NotImplementedException();
+            return _Context.Inventory.Where(x => x.Active == true && x.ProductId == productId && x.WarehouseId==warehouseId);
         }
     }
 }

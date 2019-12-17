@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace PointOfSalesV2.Repository
 {
@@ -11,9 +12,9 @@ namespace PointOfSalesV2.Repository
         {
         }
 
-        public IEnumerable<CustomerBalance> CustomerBalanceByCurrency(long customerId, long currencyId)
+        public CustomerBalance CustomerBalanceByCurrency(long customerId, long currencyId)
         {
-            throw new NotImplementedException();
+            return _Context.CustomersBalance.FirstOrDefault(x => x.Active == true && x.CurrencyId == currencyId && x.CustomerId == customerId);
         }
     }
 }

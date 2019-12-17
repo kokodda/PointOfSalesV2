@@ -1,6 +1,7 @@
 ﻿using PointOfSalesV2.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PointOfSalesV2.Repository
@@ -13,12 +14,12 @@ namespace PointOfSalesV2.Repository
 
         public IEnumerable<InvoiceTax> GetInvoiceTaxes(string invoiceNumber)
         {
-            throw new NotImplementedException();
+            return _Context.InvoicesTaxes.Where(x => x.NoInvoice.ToLower() == invoiceNumber.ToLower());
         }
 
         public IEnumerable<InvoiceTax> GetInvoiceTaxes(long invoiceID)
         {
-            throw new NotImplementedException();
+            return _Context.InvoicesTaxes.Where(x => x.InvoiceId == invoiceID);
         }
     }
 }

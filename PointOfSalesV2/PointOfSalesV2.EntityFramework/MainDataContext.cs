@@ -43,7 +43,6 @@ public class MainDataContext : DbContext
     public virtual DbSet<BranchOffice> BranchOffices { get; set; }
     public virtual DbSet<MovementType> MovementTypes { get; set; }
     public virtual DbSet<OpeningAmount> OpeningsAmounts { get; set; }
-    public virtual DbSet<Payment> Payments { get; set; }
     public virtual DbSet<PaymentType> PaymentTypes { get; set; }
     public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
     public virtual DbSet<Product> Products { get; set; }

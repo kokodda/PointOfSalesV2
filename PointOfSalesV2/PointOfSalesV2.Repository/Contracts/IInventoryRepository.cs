@@ -10,6 +10,6 @@ namespace PointOfSalesV2.Repository
         IEnumerable<Inventory> GetWarehouseInventoryByProduct(long warehouseId,long productId);
         IEnumerable<Inventory> GetWarehouseInventory(long warehouseId);
         IEnumerable<Inventory> GetProductInventory(long productId);
-        IEnumerable<Inventory> GetLocationInventory(long locationId, long? productId);
+        IEnumerable<Inventory> GetBranchOfficeInventory(long branchOfficeId, long? productId);
     }
 }

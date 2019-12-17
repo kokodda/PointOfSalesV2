@@ -1,6 +1,8 @@
-﻿using PointOfSalesV2.Entities;
+﻿using PointOfSalesV2.Common;
+using PointOfSalesV2.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PointOfSalesV2.Repository
@@ -13,7 +15,7 @@ namespace PointOfSalesV2.Repository
 
         public IEnumerable<ProductTax> GetProductTaxes(long productId)
         {
-            throw new NotImplementedException();
+            return _Context.ProductTaxes.Where(x => x.Active == true && x.ProductId == productId);
         }
     }
 }

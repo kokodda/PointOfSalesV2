@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace PointOfSalesV2.Repository
 {
@@ -13,12 +14,12 @@ namespace PointOfSalesV2.Repository
 
         public IEnumerable<ExpenseTax> GetExpenseTaxes(string reference)
         {
-            throw new NotImplementedException();
+            return _Context.ExpenseTaxes.Where(x => x.Active == true && x.Reference.ToLower() == reference.ToLower());
         }
 
         public IEnumerable<ExpenseTax> GetExpenseTaxes(long id)
         {
-            throw new NotImplementedException();
+            return _Context.ExpenseTaxes.Where(x => x.Active == true && x.ExpenseId==id);
         }
     }
 }
