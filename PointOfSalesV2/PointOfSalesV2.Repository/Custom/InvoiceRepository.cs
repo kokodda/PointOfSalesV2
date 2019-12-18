@@ -49,10 +49,113 @@ namespace PointOfSalesV2.Repository
 
         public override Result<Invoice> Add(Invoice entity)
         {
-            return base.Add(entity);
+            Result<Invoice> result = new Result<Invoice>(-1, -1, "error_msg");
+            using (var transaction = _Context.Database.BeginTransaction()) 
+            {
+                try
+                {
+                    var trnResult = CreateTRN(entity);
+
+                    if (trnResult.Status < 0) 
+                    {
+                        transaction.Rollback();
+                        return trnResult;
+                    }
+                    entity = trnResult.Data.FirstOrDefault();
+                    entity.Seller = entity.Seller == null && entity.SellerId.HasValue && entity.SellerId.Value > 0 ?
+                        _Context.Sellers.Find(entity.SellerId.Value) : entity.Seller;
+                    entity.ZoneId = entity.Seller != null ? (entity.Seller.ZoneId.HasValue ? entity.Seller.ZoneId.Value : 0) : 0;
+                    CreditNote appliedCreditNote = new CreditNote();
+                    if (!string.IsNullOrEmpty(entity.AppliedCreditNote))
+                        appliedCreditNote = _Context.CreditNotes.FirstOrDefault(x => x.Sequence == entity.AppliedCreditNote);
+
+                    if (entity.InvoiceDetails.Count <= 0)
+                    {
+                        transaction.Rollback();
+                        return new Result<Invoice>(-1, -1, "emptyInvoice_msg");
+                    }
+                    List<InvoiceDetail> details = entity.InvoiceDetails;
+
+                    if (entity.Seller != null && entity.Seller.Id > 0)
+                    {
+                        details.ForEach(d => {
+                            decimal comission = entity.Seller.FixedComission ? ((d.BeforeTaxesAmount) * entity.Seller.ComissionRate) : 0;
+                            comission += entity.Seller.ComissionByProduct ? ((d.BeforeTaxesAmount) * d.Product?.SellerRate).Value : 0;
+                            d.SellerRate = comission;
+                        });
+                        entity.SellerRate = details.Sum(x => x.SellerRate);
+
+                    }
+
+                    entity.InvoiceNumber = SequencesHelper.CrearControlDeinvoice();
+                    entity.BillingDate = DateTime.Now;
+                    var tempBranchOfiice = entity.BranchOffice??_Context.BranchOffices.Find(entity.BranchOfficeId);
+                    entity.State = (entity.PaidAmount == entity.TotalAmount && entity.OwedAmount == 0) ? (char)Enums.BillingStates.Paid : (char)Enums.BillingStates.Billed;
+                    entity = invoiceHelper.AplicarNotaDeCredito(entity, appliedCreditNote, out appliedCreditNote);
+                    if (entity.OwedAmount > 0)
+                    {
+                        var balance = _Context.CustomersBalance.FirstOrDefault(x=> x.CustomerId==entity.CustomerId && x.CurrencyId==entity.CurrencyId && x.Active==true) ??
+                            new CustomerBalance() { CustomerId = entity.CustomerId, CurrencyId = entity.CurrencyId, Id = 0, Active = true };
+                        entity.Customer = entity.Customer != null && entity.Customer.Id > 0 ? entity.Customer :_Context.Customers.Find(entity.CustomerId);
+
+                        balance.OwedAmount += entity.OwedAmount;
+                        if (balance.CurrencyId == entity.Customer.CurrencyId && entity.Customer.CreditAmountLimit > 0 && balance.OwedAmount > entity.Customer.CreditAmountLimit)
+                        {
+                            transaction.Rollback();
+                            return new Result<Invoice>(-1, -1, "creditLimitReached_msg");
+                        }
+                        if (balance.Id > 0)
+                            _Context.CustomersBalance.Update(balance);
+                        else
+                            _Context.CustomersBalance.Add(balance);
+
+                        _Context.SaveChanges();
+
+                    }
+                    entity.ReturnedAmount = entity.ReturnedAmount < 0 ? 0 : entity.ReturnedAmount;
+
+                    var invoice = base.Add(entity).Data.FirstOrDefault();
+                    if (!string.IsNullOrEmpty(appliedCreditNote.Sequence)) 
+                    {
+                        _Context.CreditNotes.Update(appliedCreditNote);
+                        _Context.SaveChanges();
+                    }
+
+                    invoice.InvoiceDetails = details;
+                    invoice.BranchOffice = tempBranchOfiice;
+                    DetalleinvoiceHelper.InsertarDetalles(invoice);
+                    if (entity.PaidAmount > 0 && entity.Payments != null && entity.Payments.Count > 0)
+                    {
+                        string sequencePayment = SequencesHelper.CrearControlDePayments();
+                        foreach (var payment in entity.Payments)
+                        {
+                            payment.InvoiceNumber = entity.InvoiceNumber ;
+                            payment.CreatedBy = entity.CreatedBy;
+                            payment.CreatedDate = entity.CreatedDate;
+                            payment.CurrentOwedAmount = payment.OwedAmount;
+                            payment.Sequence = sequencePayment;
+                            invoiceHelper.AplicarPaymentinvoice(payment);
+                        }
+                    }
+
+                    // return invoice;
+                    transaction.Commit();
+                    result = new Result<Invoice>(entity.Id, 0, "ok_msg", new List<Invoice>() { invoice });
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    result = new Result<Invoice>(-1, -1, "error_msg", null, ex);
+                    transaction.Rollback();
+                    return result;
+                }
+            }
+        
+
         }
 
-        private Result<Invoice> CreateNRC(Invoice obj)
+        private Result<Invoice> CreateTRN(Invoice obj)
         {
             if (!string.IsNullOrEmpty(obj.TRNType) && obj.TRNType != "N/A")
             {

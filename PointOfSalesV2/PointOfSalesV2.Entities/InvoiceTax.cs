@@ -18,7 +18,7 @@ namespace PointOfSalesV2.Entities
         [MaxLength(50)]
         public string InvoiceNumber { get; set; }
         public DateTime Fecha { get; set; }
-        public decimal MontoTax { get; set; }
+        public decimal TaxAmount { get; set; }
 
         [ForeignKey("TaxId")]
         public Tax Tax { get; set; }
@@ -33,7 +33,7 @@ namespace PointOfSalesV2.Entities
 
         public bool Equals(InvoiceTax other)
         {
-            return (this.Id == other.Id && this.InvoiceId == other.InvoiceId && this.TaxId == other.TaxId && this.MontoTax == other.MontoTax &&
+            return (this.Id == other.Id && this.InvoiceId == other.InvoiceId && this.TaxId == other.TaxId && this.TaxAmount == other.TaxAmount &&
                 this.Active == other.Active && this.CreatedDate == other.CreatedDate);
         }
 
@@ -46,7 +46,7 @@ namespace PointOfSalesV2.Entities
                 hashCode = (hashCode * 397) ^ this.TaxId;
                 hashCode = (hashCode * 397) ^ this.InvoiceId;
                 hashCode = (hashCode * 397) ^ Convert.ToInt32(this.Active);
-                var hashCodeDecimal = this.MontoTax.GetHashCode();
+                var hashCodeDecimal = this.TaxAmount.GetHashCode();
                 hashCode = hashCode ^ hashCodeDecimal;
 
                 return Convert.ToInt32( hashCode);

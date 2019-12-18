@@ -148,7 +148,7 @@ namespace PointOfSalesV2.Entities
         }
 
       [NotMapped]
-        public string NotaCreditoAplicada { get; set; }
+        public string AppliedCreditNote { get; set; }
 
 
 
