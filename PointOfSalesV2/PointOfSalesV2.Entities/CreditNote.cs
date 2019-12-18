@@ -10,10 +10,13 @@ namespace PointOfSalesV2.Entities
 {
     public class CreditNote : CommonData
     {
-       
 
+
+        [MaxLength(50)]
         public string OriginInvoiceNumber { get; set; }
+        [MaxLength(50)]
         public string AppliedInvoiceNumber { get; set; }
+        [MaxLength(50)]
         public string Sequence { get; set; }
         public decimal Amount { get; set; }
 

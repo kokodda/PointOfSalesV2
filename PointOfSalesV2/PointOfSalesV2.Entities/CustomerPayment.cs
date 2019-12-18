@@ -53,13 +53,17 @@ namespace PointOfSalesV2.Entities
         public long InvoiceCurrencyId { get; set; }
 
         public long PaymentTypeId { get; set; }
+        [MaxLength(50)]
         public string InvoiceNumber { get; set; }
         public decimal ExchangeRate { get; set; }
         public decimal OutstandingAmount { get; set; }
+        [MaxLength(50)]
         public string Sequence { get; set; }
+        [MaxLength(50)]
         public string CheckbookNumber { get; set; }
         public long? SellerId { get; set; }
 
+        [MaxLength(200)]
         public string Details { get; set; }
 
         [ForeignKey("CurrencyId")]
@@ -78,7 +82,7 @@ namespace PointOfSalesV2.Entities
         [NotMapped]
         public string Name { get; set; }
 
-     
+     [NotMapped]
         public string PaymentTypeName { get; set; }
 
 

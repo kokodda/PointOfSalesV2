@@ -27,8 +27,8 @@ namespace PointOfSalesV2.Entities
             this.CreatedDate = nuevaInvoice.CreatedDate;
             this.BillingDate = nuevaInvoice.BillingDate;
             this.ModifiedDate = nuevaInvoice.ModifiedDate;
-            this.Location = nuevaInvoice.Location ?? null;
-            this.LocationId = nuevaInvoice.LocationId;
+            this.BranchOffice = nuevaInvoice.BranchOffice ?? null;
+            this.BranchOfficeId = nuevaInvoice.BranchOfficeId;
             this.ModifiedBy = nuevaInvoice.ModifiedBy ;
             this.Currency = nuevaInvoice.Currency ?? null;
             this.CurrencyId = nuevaInvoice.CurrencyId;
@@ -61,6 +61,7 @@ namespace PointOfSalesV2.Entities
         public long CustomerId { get; set; }
 
         public long ZoneId { get; set; }
+        [MaxLength(50)]
         public string DocumentNumber { get; set; }
         public decimal DiscountRate { get; set; }
         public long? SellerId { get; set; }
@@ -80,16 +81,18 @@ namespace PointOfSalesV2.Entities
         public decimal OwedAmount { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal AppliedCreditNoteAmount { get; set; }
-
+        [MaxLength(100)]
         public string NRC { get; set; }
 
 
-        public long LocationId { get; set; }
-
+        public long BranchOfficeId { get; set; }
+        [MaxLength(50)]
         public string InvoiceNumber { get; set; }
         public long CurrencyId { get; set; }
         public decimal TotalAmount { get; set; }
+        [MaxLength(50)]
         public string TRN { get; set; }
+        [MaxLength(2)]
         public string TRNType { get; set; }
         public long TRNControlId { get; set; }
         public decimal PaidAmount { get; set; }
@@ -98,7 +101,7 @@ namespace PointOfSalesV2.Entities
         public DateTime? BillingDate { get; set; }
         public decimal TaxesAmount { get; set; }
 
-
+        [MaxLength(200)]
         public string Details { get; set; }
 
         public decimal BeforeTaxesAmount { get; set; }
@@ -123,8 +126,8 @@ namespace PointOfSalesV2.Entities
         public TRNControl TNRControl { get; set; }
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }
-        [ForeignKey("LocationId")]
-        public BranchOffice Location { get; set; }
+        [ForeignKey("BranchOfficeId")]
+        public BranchOffice BranchOffice { get; set; }
      
         public virtual  List<Payment> Payments { get; set; }
 

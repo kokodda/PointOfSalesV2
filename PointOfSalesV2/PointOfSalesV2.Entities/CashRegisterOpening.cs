@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace PointOfSalesV2.Entities
 {
@@ -22,6 +23,7 @@ namespace PointOfSalesV2.Entities
         public decimal TotalPaymentsAmount { get; set; }
         public decimal OpeningClosureDifference { get; set; }
 
+        [MaxLength(50)]
         public string UserName { get; set; }
         public char State { get; set; }
         public decimal TotalOpeningAmount { get; set; }

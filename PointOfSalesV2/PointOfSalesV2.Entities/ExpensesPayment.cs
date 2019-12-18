@@ -40,11 +40,14 @@ namespace PointOfSalesV2.Entities
         public long ExpenseCurrencyId { get; set; }
 
         public long PaymentTypeId { get; set; }
+        [MaxLength(50)]
         public string ExpenseReference { get; set; }
         public decimal ExchangeRate { get; set; }
         public decimal OutstandingAmount { get; set; }
+        [MaxLength(50)]
         public string Sequence { get; set; }
 
+        [MaxLength(200)]
         public string Details { get; set; }
 
 

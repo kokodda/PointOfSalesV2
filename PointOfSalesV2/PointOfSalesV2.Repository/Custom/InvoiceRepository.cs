@@ -46,5 +46,30 @@ namespace PointOfSalesV2.Repository
          && (invoice.State != (char)Enums.BillingStates.Nulled);
             return _Context.Invoices.Where(func);
         }
+
+        public override Result<Invoice> Add(Invoice entity)
+        {
+            return base.Add(entity);
+        }
+
+        private Result<Invoice> CreateNRC(Invoice obj)
+        {
+            if (!string.IsNullOrEmpty(obj.TRNType) && obj.TRNType != "N/A")
+            {
+                
+                var trnControl = _Context.TRNsControl.FirstOrDefault(x => x.Active == true && x.Type == obj.TRNType);
+                if (trnControl == null || trnControl.Quantity <= 0)
+                    return new Result<Invoice>(-1, -1, "trnNotAvailable_msg");
+
+                obj.TRN = $"{trnControl.Series}{trnControl.Type}{string.Format("{0:00000000}", trnControl.Sequence)}";
+                trnControl.Sequence++;
+                trnControl.Quantity--;
+                trnControl.NumericControl++;
+                _Context.TRNsControl.Update(trnControl);
+                _Context.SaveChanges();
+                return new Result<Invoice>(0, 0, "ok_msg", new List<Invoice>() { obj });
+            }
+            return new Result<Invoice>(0, 0, "ok_msg", new List<Invoice>() { obj });
+        }
     }
 }

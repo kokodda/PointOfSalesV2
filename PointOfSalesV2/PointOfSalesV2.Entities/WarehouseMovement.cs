@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace PointOfSalesV2.Entities
 {
@@ -22,7 +23,7 @@ namespace PointOfSalesV2.Entities
         public long UnitId { get; set; }
 
         public string MovementType { get; set; }
-
+        [MaxLength(50)]
         public string Reference { get; set; }
 
         public decimal CurrentBalance { get; set; }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace PointOfSalesV2.Entities
 {
@@ -14,7 +15,8 @@ namespace PointOfSalesV2.Entities
         public long InvoiceId { get; set; }
         public long CurrencyId { get; set; }
         public long TaxId { get; set; }
-        public string NoInvoice { get; set; }
+        [MaxLength(50)]
+        public string InvoiceNumber { get; set; }
         public DateTime Fecha { get; set; }
         public decimal MontoTax { get; set; }
 

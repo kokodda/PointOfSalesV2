@@ -11,10 +11,9 @@ namespace PointOfSalesV2.Entities
     public class PaymentType : CommonData
     {
 
+        public short Code { get; set; }
 
-        public string Code { get; set; }
-
-      
+        [MaxLength(100)]
         public string Name { get; set; }
 
        

@@ -52,10 +52,13 @@ namespace PointOfSalesV2.Entities
         public long InvoiceCurrencyId { get; set; }
 
         public long PaymentTypeId { get; set; }
+        [MaxLength(50)]
         public string InvoiceNumber { get; set; }
         public decimal ExchangeRate { get; set; }
         public decimal OwedAmount { get; set; }
+        [MaxLength(50)]
         public string Sequence { get; set; }
+        [MaxLength(50)]
         public string ReceiptNumber { get; set; }
         public long? SellerId { get; set; }
 
@@ -63,7 +66,8 @@ namespace PointOfSalesV2.Entities
 
 
 
-       
+
+        [MaxLength(200)]
         public string Details { get; set; }
 
 

@@ -15,6 +15,7 @@ namespace PointOfSalesV2.Entities
         public long ProductId { get; set; }
 
         public decimal Quantity { get; set; }
+        [MaxLength(50)]
         public string Reference { get; set; }
         public long WarehouseId { get; set; }
         public decimal TaxesAmount { get; set; }

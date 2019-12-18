@@ -10,6 +10,7 @@ namespace PointOfSalesV2.Entities
 {
     public class Unit : CommonData
     {
+        [MaxLength(100)]
         public string Name { get; set; }
     }
 }

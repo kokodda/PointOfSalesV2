@@ -57,7 +57,7 @@ namespace PointOfSalesV2.Entities
         public long InvoiceId { get; set; }
 
         public decimal BeforeTaxesAmount { get; set; }
-
+        [MaxLength(200)]
         public string Comments { get; set; }
 
         public decimal PrincipalCurrencyAmount { get; set; }

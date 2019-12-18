@@ -12,9 +12,9 @@ namespace PointOfSalesV2.Entities
     {
 
 
-        public string Code { get; set; }
+        public short Code { get; set; }
 
-      
+        [MaxLength(100)]
         public string Name { get; set; }
 
        

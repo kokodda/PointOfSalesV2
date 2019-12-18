@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace PointOfSalesV2.Entities
 {
@@ -46,13 +47,15 @@ namespace PointOfSalesV2.Entities
         public long PaymentTypeId { get; set; }
         [NotMapped]
         public string Name { get; set; }
-        
+
+        [MaxLength(200)]
         public string Details { get; set; }
 
       
         public List<ExpenseTax> Taxes { get; set; }
 
         public long SupplierId { get; set; }
+        [MaxLength(50)]
         public string ExpenseReference { get; set; }
         public long CurrencyId { get; set; }
         public decimal TotalAmount { get; set; }
@@ -65,6 +68,7 @@ namespace PointOfSalesV2.Entities
         public decimal GivenAmount { get; set; }
         public decimal OwedAmount { get; set; }
         public long BranchOfficeId { get; set; }
+        [MaxLength(50)]
         public string TRN { get; set; }
 
         [ForeignKey("CurrencyId")]

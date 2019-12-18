@@ -4,18 +4,23 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace PointOfSalesV2.Entities
 {
     public class Customer : CommonData
     {
 
+        [MaxLength(20)]
         public string CardId { get; set; }
+        [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
         public long CurrencyId { get; set; }
 
+        [MaxLength(200)]
         public string Address { get; set; }
+        [MaxLength(50)]
         public string Code { get; set; }
         public long InvoiceDueDays { get; set; }
 
@@ -25,6 +30,7 @@ namespace PointOfSalesV2.Entities
         public long? ZoneId { get; set; }
 
 
+        [MaxLength(100)]
         public string Name { get; set; }
 
         [NotMapped]
@@ -44,6 +50,7 @@ namespace PointOfSalesV2.Entities
 
 
         //Tax receipt number -> NCF
+        [MaxLength(50)]
         public string TRNType { get; set; }
 
 

@@ -10,9 +10,9 @@ namespace PointOfSalesV2.Entities
 {
     public class SequenceControl : CommonData
     {
-        public string Code { get; set; }
+        public short Code { get; set; }
         public long NumericControl { get; set; }
-
+        [MaxLength(100)]
         public string Name { get; set; }
 
     }

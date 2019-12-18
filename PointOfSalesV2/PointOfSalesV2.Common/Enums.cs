@@ -14,5 +14,33 @@ namespace PointOfSalesV2.Common
         Quoted='Q',
         Converted='C'
         }
+
+        public enum SequenceTypes 
+        {
+        Invoices=1,
+        Sellers=2,
+        Clients=3,
+        Quotes=4,
+        Expenses=5,
+        WarehouseTransfers=6,
+        InventoryIncomes=7,
+        CustomersReturns=8,
+        SupplierReturns=9,
+        CustomerPayments=10,
+        ExpensesPayments=11
+        }
+
+        public enum MovementTypes 
+        {
+        IN=1,
+        OUT=2
+        }
+
+        public enum PaymentTypes 
+        {
+        CASH=1,
+        CHECK=2,
+        CREDITCARD=3
+        }
     }
 }

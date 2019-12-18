@@ -31,13 +31,13 @@ namespace PointOfSalesV2.Api.Controllers
         [HttpGet]
      //   [ActionAuthorize("ReadAll")]
         //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
-        public virtual IEnumerable<T> Get()
+        public virtual IActionResult Get()
         {
             try
             {
                 var data = _baseRepo.GetAll(x => x.Where(y => y.Active == true));
                 //    var result = new PageResult<T>(data, new Uri("https://localhost:44383/api/products?$skip=2&$top=2"), data.Count());
-                return data;
+                return Ok(new { status = 0, message = "OK", data = data }); 
             }
 
             catch (Exception ex)

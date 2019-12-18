@@ -14,7 +14,7 @@ namespace PointOfSalesV2.Repository
 
         public IEnumerable<InvoiceTax> GetInvoiceTaxes(string invoiceNumber)
         {
-            return _Context.InvoicesTaxes.Where(x => x.NoInvoice.ToLower() == invoiceNumber.ToLower());
+            return _Context.InvoicesTaxes.Where(x => x.InvoiceNumber.ToLower() == invoiceNumber.ToLower());
         }
 
         public IEnumerable<InvoiceTax> GetInvoiceTaxes(long invoiceID)
