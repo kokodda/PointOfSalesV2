@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PointOfSalesV2.Entities
 {
-   public class Result<T> where T: class, new ()
+   public class Result<T> where T: new()
     {
         public Result() { }
         public Result(long id = 0, int status = 0, string message = "", IEnumerable<T> data = null, Exception exception=null) 

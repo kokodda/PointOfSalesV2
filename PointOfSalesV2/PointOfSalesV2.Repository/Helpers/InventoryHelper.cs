@@ -1,154 +1,201 @@
 ﻿using PointOfSalesV2.Entities;
+using PointOfSalesV2.Repository.Helpers.BillServices;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace PointOfSalesV2.Repository.Helpers
 {
  public   class InventoryHelper
     {
-        public static void ActualizarInventarioEnAlmacen(InvoiceDetail detail, IProductRepository productRepository, 
-            IInventoryRepository inventoryRepository, Warehouse currentWarehouse, Invoice invoice)
+        public static Result<object> UpdateInventory(InvoiceDetail detail, Warehouse currentWarehouse, Invoice invoice, IDataRepositoryFactory _repositoryFactory)
         {
-            IProductosUnidadesService productoUnidades = new ProductoUnidadesService();
-            IMovimientoAlmacenService logMovimientos = new MovimientoAlmacenService();
-            AlmacenProducto existenciaActual = inventoryRepository.ObtenerExistenciaDeProductoEnAlmacen(detail.ProductoId, currentWarehouse.Id).FirstOrDefault();
-            if (existenciaActual != null)
+            var warehouseMovementRepo = _repositoryFactory.GetDataRepositories<WarehouseMovement>();
+            var productUnitsRepo = _repositoryFactory.GetDataRepositories<UnitProductEquivalence>();
+            var productRepo = _repositoryFactory.GetDataRepositories<Product>();
+            var inventoryRepo = _repositoryFactory.GetDataRepositories<Inventory>();
+            Inventory currentInventory = inventoryRepo.Get(x => x.Where(y => y.Active == true && y.ProductId == detail.ProductId && y.WarehouseId == currentWarehouse.Id));
+            if (currentInventory != null)
             {
-                detail.Cantidad = PuntoDeVenta.DataAccess.Dto.Helpers.ProductosHelper.ConvertirAUnidadPrincipalProducto(
-       detail.Cantidad,
-       detail.UnidadId.Value,
-      detail.Producto.ProductoUnidades
+                var convertionResult = ProductsHelper.ConvertToProductPrincipalUnit(
+       detail.Quantity,
+       detail.UnitId.Value,
+      detail.Product.ProductUnits
        );
-                detail.UnidadId = detail.Producto.ProductoUnidades.FirstOrDefault(pu => pu.EsPrincipal).UnidadId;
-                existenciaActual.Cantidad = PuntoDeVenta.DataAccess.Dto.Helpers.ProductosHelper.ConvertirAUnidadPrincipalProducto(
-       existenciaActual.Cantidad,
-       detail.Producto.ProductoUnidades.Where(pu => pu.EsPrincipal).FirstOrDefault().UnidadId,
-      detail.Producto.ProductoUnidades
+                if (convertionResult.Status >= 0)
+                    detail.Quantity =(decimal) convertionResult.Data.FirstOrDefault();
+                else
+                    return convertionResult;
+
+                detail.UnitId = detail.Product.ProductUnits.FirstOrDefault(pu => pu.IsPrimary).UnitId;
+                convertionResult = ProductsHelper.ConvertFromProductPrincipalUnit(
+       currentInventory.Quantity,
+       detail.Product.ProductUnits.Where(pu => pu.IsPrimary).FirstOrDefault().UnitId,
+      detail.Product.ProductUnits
        );
 
+                if (convertionResult.Status >= 0)
+                    currentInventory.Quantity = (decimal)convertionResult.Data.FirstOrDefault();
+                else
+                    return convertionResult;
 
-                if (existenciaActual.Cantidad < detail.Cantidad)
-                    throw new Exception($"Existencia insuficiente para el producto {detail.Producto.Nombre}. Solo existen {existenciaActual.Cantidad.ToString()} en el almacen {currentWarehouse.Nombre}. invoice cancelada.");
+
+                if (currentInventory.Quantity < detail.Quantity)
+                    return new Result<object>(-1, -1, $"outOfStock_msg | {detail.Product.Name},{currentWarehouse.Name}");
                 else
                 {
-                    existenciaActual.Cantidad -= detail.Cantidad;
-                    Producto producto = service.ObtenerPorId(detail.ProductoId);
-                    producto.Existencia -= detail.Cantidad;
-                    service.Actualizar(producto);
-                    inventoryRepository.Actualizar(existenciaActual);
+                    currentInventory.Quantity -= detail.Quantity;
+                    Product product = productRepo.Get(detail.ProductId).Data?.FirstOrDefault();
+                    product.Existence -= detail.Quantity;
+                    productRepo.Update(product);
+                    inventoryRepo.Update(currentInventory);
 
 
-                    var unidades = detail.Producto.ProductoUnidades ?? productoUnidades.ObtenerUnidadesDeProducto(detail.ProductoId);
-                    MovimientoAlmacen movimientoAlmacen = new MovimientoAlmacen(currentWarehouse.Id, detail.ProductoId, detail.Cantidad * -1, detail.CreadoPor ?? "system", true, unidades.Where(u => u.EsPrincipal).FirstOrDefault().UnidadId, 0, "OUT", invoice.Numeroinvoice ?? string.Empty);
-                    logMovimientos.Insertar(movimientoAlmacen);
+                    var units = detail.Product.ProductUnits ?? productUnitsRepo.GetAll(x=>x.Where(y=>y.Active==true && y.ProductId==detail.ProductId)).Data;
+                    WarehouseMovement movement = new WarehouseMovement(currentWarehouse.Id, detail.ProductId, detail.Quantity * -1,
+                        true, units.Where(u => u.IsPrimary).FirstOrDefault().UnitId, 0, "OUT",
+                        invoice.InvoiceNumber ??invoice.DocumentNumber?? string.Empty, currentInventory.Quantity);
+
+                    warehouseMovementRepo.Add(movement);
+                    return new Result<object>(0, 0, "ok_msg");
 
 
                 }
             }
             else
-                throw new Exception("No existe inventario de ese producto. No se puede invoicer");
+                return new Result<object>(-1, -1, $"outOfStock_msg | {detail.Product.Name},{currentWarehouse.Name}");
 
         }
 
 
-        public static void SumarInventarioAlAlmacen(InvoiceDetail detail, invoice invoice, IProductoService service = null, IinventoryRepository inventoryRepository = null)
+        public static Result<object> AddInventory(InvoiceDetail detail, Invoice invoice, IDataRepositoryFactory _repositoryFactory)
         {
-            IProductosUnidadesService productoUnidades = new ProductoUnidadesService();
-            IMovimientoAlmacenService logMovimientos = new MovimientoAlmacenService();
-            if (!detail.Producto.EsServicio)
+            var warehouseMovementRepo = _repositoryFactory.GetDataRepositories<WarehouseMovement>();
+            var productUnitsRepo = _repositoryFactory.GetDataRepositories<UnitProductEquivalence>();
+            var productRepo = _repositoryFactory.GetDataRepositories<Product>();
+            var inventoryRepo = _repositoryFactory.GetDataRepositories<Inventory>();
+            if (!detail.Product.IsService)
             {
-                detail.Producto.ProductoUnidades = detail.Producto.ProductoUnidades ?? productoUnidades.ObtenerUnidadesDeProducto(detail.ProductoId);
-                IProductoService newService = service ?? new ProductoService();
-                IinventoryRepository newinventoryRepository = inventoryRepository ?? new inventoryRepository();
-                if (detail.AlmacenId.HasValue)
+                detail.Product.ProductUnits = detail.Product.ProductUnits ?? productUnitsRepo.GetAll(x=>x.Where(y=>y.Active==true && y.ProductId==detail.ProductId)).Data.ToList();
+               
+              
+                if (detail.WarehouseId.HasValue)
                 {
-                    AlmacenProducto existenciaActual = newinventoryRepository.ObtenerExistenciaDeProductoEnAlmacen(detail.ProductoId, detail.AlmacenId.Value).FirstOrDefault();
-                    if (existenciaActual != null)
+                    Inventory currentInventory = inventoryRepo.Get(x=>x.Where(y=>y.Active==true && y.ProductId==detail.ProductId && y.WarehouseId==detail.WarehouseId.Value));
+                    if (currentInventory != null)
                     {
-
-                        existenciaActual.Cantidad = PuntoDeVenta.DataAccess.Dto.Helpers.ProductosHelper.ConvertirAUnidadPrincipalProducto(
-               existenciaActual.Cantidad,
-               detail.Producto.ProductoUnidades.Where(pu => pu.EsPrincipal).FirstOrDefault().UnidadId,
-               detail.Producto.ProductoUnidades
+                        var convertionResult = ProductsHelper.ConvertToProductPrincipalUnit(
+               currentInventory.Quantity,
+               detail.Product.ProductUnits.Where(pu => pu.IsPrimary).FirstOrDefault().UnitId,
+               detail.Product.ProductUnits
                );
-                        detail.Cantidad = PuntoDeVenta.DataAccess.Dto.Helpers.ProductosHelper.ConvertirAUnidadPrincipalProducto(
-               detail.Cantidad,
-               detail.UnidadId.Value,
-                detail.Producto.ProductoUnidades
+                        if (convertionResult.Status < 0)
+                            return convertionResult;
+
+                        currentInventory.Quantity = (decimal)convertionResult.Data.FirstOrDefault();
+
+                        convertionResult= ProductsHelper.ConvertToProductPrincipalUnit(
+               detail.Quantity,
+               detail.UnitId.Value,
+                detail.Product.ProductUnits
                );
-                        var unidades = detail.Producto.ProductoUnidades ?? productoUnidades.ObtenerUnidadesDeProducto(detail.ProductoId);
-                        MovimientoAlmacen movimientoAlmacen = new MovimientoAlmacen(existenciaActual.AlmacenId, detail.ProductoId, detail.Cantidad, detail.CreadoPor ?? "system", true, unidades.Where(u => u.EsPrincipal).FirstOrDefault().UnidadId, 0, "IN", invoice.Numeroinvoice ?? string.Empty);
-                        logMovimientos.Insertar(movimientoAlmacen);
+                        if (convertionResult.Status < 0)
+                            return convertionResult;
 
-                        existenciaActual.Cantidad += detail.Cantidad;
-                        Producto producto = newService.ObtenerPorId(detail.ProductoId);
-                        producto.Existencia += detail.Cantidad;
-                        newService.Actualizar(producto);
-                        newinventoryRepository.Actualizar(existenciaActual);
+                        detail.Quantity = (decimal)convertionResult.Data.FirstOrDefault();
+                        var units = detail.Product.ProductUnits ?? productUnitsRepo.GetAll(x=>x.Where(y=>y.Active==true && y.ProductId==detail.ProductId)).Data.ToList();
+                       
 
+                        currentInventory.Quantity += detail.Quantity;
+                        Product Product = productRepo.Get(detail.ProductId).Data.FirstOrDefault();
+                        Product.Existence += detail.Quantity;
+                        productRepo.Update(Product);
+                        inventoryRepo.Update(currentInventory);
+
+                        WarehouseMovement movimientoAlmacen = new WarehouseMovement(currentInventory.WarehouseId, detail.ProductId, detail.Quantity, true,
+                           units.Where(u => u.IsPrimary).FirstOrDefault().UnitId, 0, "IN", invoice.InvoiceNumber ?? invoice.DocumentNumber ?? string.Empty, currentInventory.Quantity);
+                        warehouseMovementRepo.Add(movimientoAlmacen);
+                        return new Result<object>(0, 0, "ok_msg");
                     }
                     else
-                        throw new Exception("No existe inventario de ese producto. No se puede invoicer");
+                        return new Result<object>(-1, -1, $"outOfStock_msg | {detail.Product.Name}");
                 }
             }
 
-
+            return new Result<object>(0, 0, "ok_msg");
 
         }
 
 
-        public static void ReinsertarInventarioEnAlmacen(InvoiceDetail detail, IProductoService service, IinventoryRepository inventoryRepository, Almacen currentWarehouse)
+        public static Result<object> ReInsertInventoryToWarehouse(InvoiceDetail detail, IDataRepositoryFactory _repositoryFactory, Warehouse currentWarehouse)
         {
-            IProductosUnidadesService productoUnidades = new ProductoUnidadesService();
-            AlmacenProducto existenciaActual = inventoryRepository.ObtenerExistenciaDeProductoEnAlmacen(detail.ProductoId, currentWarehouse.Id).FirstOrDefault();
-            if (existenciaActual != null)
+            var productUnitsRepo = _repositoryFactory.GetDataRepositories<UnitProductEquivalence>();
+            var inventoryRepo = _repositoryFactory.GetDataRepositories<Inventory>();
+            var warehouseMovementRepo = _repositoryFactory.GetDataRepositories<WarehouseMovement>();
+            var productRepo = _repositoryFactory.GetDataRepositories<Product>();
+
+            Inventory currentInventory = inventoryRepo.Get(x=>x.Where(y=>y.ProductId==detail.ProductId && y.WarehouseId== currentWarehouse.Id && y.Active==true));
+            if (currentInventory != null)
             {
-                detail.Producto.ProductoUnidades = detail.Producto.ProductoUnidades ?? productoUnidades.ObtenerUnidadesDeProducto(detail.ProductoId);
-                existenciaActual.Cantidad = PuntoDeVenta.DataAccess.Dto.Helpers.ProductosHelper.ConvertirAUnidadPrincipalProducto(
-       existenciaActual.Cantidad,
-       detail.Producto.ProductoUnidades.Where(pu => pu.EsPrincipal).FirstOrDefault().UnidadId,
-        detail.Producto.ProductoUnidades
+                detail.Product.ProductUnits = detail.Product.ProductUnits ?? productUnitsRepo.GetAll(x=>x.Where(y=>y.Active && y.ProductId==detail.ProductId)).Data.ToList();
+
+                var convertionResult = ProductsHelper.ConvertToProductPrincipalUnit(
+       currentInventory.Quantity,
+       detail.Product.ProductUnits.Where(pu => pu.IsPrimary).FirstOrDefault().UnitId,
+        detail.Product.ProductUnits
        );
+                if (convertionResult.Status < 0)
+                    return convertionResult;
+                currentInventory.Quantity = (decimal)convertionResult.Data.FirstOrDefault();
 
-                detail.Cantidad = PuntoDeVenta.DataAccess.Dto.Helpers.ProductosHelper.ConvertirAUnidadPrincipalProducto(
-           detail.Cantidad,
-           detail.UnidadId.Value,
-           detail.Producto.ProductoUnidades
+                convertionResult = ProductsHelper.ConvertToProductPrincipalUnit(
+           detail.Quantity,
+           detail.UnitId.Value,
+           detail.Product.ProductUnits
            );
+                if (convertionResult.Status < 0)
+                    return convertionResult;
 
-                existenciaActual.Cantidad += detail.Cantidad;
-                Producto producto = service.ObtenerPorId(detail.ProductoId);
-                producto.Existencia += detail.Cantidad;
-                service.Actualizar(producto);
-                inventoryRepository.Actualizar(existenciaActual);
+                detail.Quantity = (decimal)convertionResult.Data.FirstOrDefault();
+
+                currentInventory.Quantity += detail.Quantity;
+                Product Product = productRepo.Get(detail.ProductId).Data.FirstOrDefault();
+                Product.Existence += detail.Quantity;
+                productRepo.Update(Product);
+                inventoryRepo.Update(currentInventory);
 
             }
             else
-                inventoryRepository.Insertar(new AlmacenProducto()
+                inventoryRepo.Add(new Inventory()
                 {
-                    Activo = true,
-                    Cantidad = detail.Cantidad,
-                    AlmacenId = currentWarehouse.Id,
-                    CreadoPor = detail.CreadoPor,
-                    FechaCreacion = DateTime.Now,
-                    ProductoId = detail.ProductoId,
-                    UnidadId = detail.Producto.ProductoUnidades.Where(u => u.EsPrincipal).FirstOrDefault().Id
+                    Active = true,
+                    Quantity = detail.Quantity,
+                    WarehouseId = currentWarehouse.Id,
+                    CreatedBy = detail.CreatedBy,
+                    CreatedDate = DateTime.Now,
+                    ProductId = detail.ProductId,
+                    UnitId = detail.Product.ProductUnits.Where(u => u.IsPrimary).FirstOrDefault().Id
                 });
+
+            return new Result<object>(0, 0, "ok_msg");
 
         }
 
-        public static InvoiceDetail ActualizarProductoEnAlmacen(Localidad localidad, InvoiceDetail detail, IProductoService service,
-            IinventoryRepository inventoryRepository, IInvoiceDetailService detailService, invoice invoice)
+        public static Result<InvoiceDetail> UpdateProductInventory(BranchOffice branchOffice, InvoiceDetail detail, IDataRepositoryFactory _repositoryFactory, Invoice invoice)
         {
             InvoiceDetail newdetail = new InvoiceDetail(detail);
+            var productRepo = _repositoryFactory.GetDataRepositories<Product>();
+            var inventoryRepo = _repositoryFactory.GetDataRepositories<Inventory>();
+            var detailRepo = _repositoryFactory.GetDataRepositories<InvoiceDetail>();
 
-            var instanciainvoicerProducto = InstanciarClaseinvoicerProductoServicio.Instanciarinvoicedor(detail.Producto);
-            newdetail = instanciainvoicerProducto.ProcesarProductoServicio(localidad.Id, detail, service, inventoryRepository, detailService, invoice);
+            var service = GetBillProductOrServiceInstance.GetBillingInstance(detail.Product);
+            var result = service.ProcessProductService(branchOffice.Id, detail, _repositoryFactory,invoice);
+            if (result.Status >= 0)
+                result.Data = new List<InvoiceDetail>() { newdetail };
 
 
-
-            return newdetail;
+            return result;
         }
     }
 }

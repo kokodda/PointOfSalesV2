@@ -31,13 +31,12 @@ namespace PointOfSalesV2.Entities
 
         public WarehouseMovement() { }
 
-        public WarehouseMovement(int warehouseId, int productId, decimal quantity, Guid createdBy, bool active, int unitId, int locationId, string movType, string reference, decimal currentBalance = 0)
+        public WarehouseMovement(long warehouseId, long productId, decimal quantity, bool active, long unitId, long locationId, string movType, string reference, decimal currentBalance = 0)
         {
             this.WarehouseId = warehouseId;
             this.ProductId = productId;
             this.Quantity = quantity;
             this.CreatedDate = DateTime.Now;
-            this.CreatedBy = createdBy;
             this.Active = active;
             this.UnitId = unitId;
             this.LocationId = locationId;
