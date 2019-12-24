@@ -14,48 +14,53 @@ namespace PointOfSalesV2.Entities
 
         public Invoice() { }
 
-        public Invoice(Invoice nuevaInvoice)
+        public Invoice(Invoice newInvoice)
         {
-            this.Id = nuevaInvoice.Id;
-            this.Active = nuevaInvoice.Active;
-            this.Customer = nuevaInvoice.Customer ?? null;
-            this.CustomerId = nuevaInvoice.CustomerId;
-            this.CreatedBy = nuevaInvoice.CreatedBy;
-            this.Details = nuevaInvoice.Details ?? null;
-            this.InvoiceDetails = nuevaInvoice.InvoiceDetails ?? new List<InvoiceDetail>();
-            this.State = nuevaInvoice.State;
-            this.CreatedDate = nuevaInvoice.CreatedDate;
-            this.BillingDate = nuevaInvoice.BillingDate;
-            this.ModifiedDate = nuevaInvoice.ModifiedDate;
-            this.BranchOffice = nuevaInvoice.BranchOffice ?? null;
-            this.BranchOfficeId = nuevaInvoice.BranchOfficeId;
-            this.ModifiedBy = nuevaInvoice.ModifiedBy ;
-            this.Currency = nuevaInvoice.Currency ?? null;
-            this.CurrencyId = nuevaInvoice.CurrencyId;
-            this.OwedAmount = nuevaInvoice.OwedAmount;
-            this.ReturnedAmount = nuevaInvoice.ReturnedAmount;
-            this.BeforeTaxesAmount = nuevaInvoice.BeforeTaxesAmount;
-            this.TaxesAmount = nuevaInvoice.TaxesAmount;
-            this.PaidAmount = nuevaInvoice.PaidAmount;
-            this.ReceivedAmount = nuevaInvoice.ReceivedAmount;
-            this.TotalAmount = nuevaInvoice.TotalAmount;
-            this.InvoiceNumber = nuevaInvoice.InvoiceNumber ?? null;
-            this.Payments = nuevaInvoice.Payments ?? null;
-            this.DiscountAmount = nuevaInvoice.DiscountAmount;
-            this.AppliedCreditNoteAmount = nuevaInvoice.AppliedCreditNoteAmount;
-            this.Details = nuevaInvoice.Details;
-            this.DiscountRate = nuevaInvoice.DiscountRate;
-            this.TRN = nuevaInvoice.TRN;
-            this.TRNType = nuevaInvoice.TRNType;
-            this.TNRControl = nuevaInvoice.TNRControl ?? null;
-            this.WarehouseId = nuevaInvoice.WarehouseId;
-            this.NRC = nuevaInvoice.NRC;
-            this.DocumentNumber = nuevaInvoice.DocumentNumber ?? null;
-            this.CajaId = nuevaInvoice.CajaId ?? null;
-            this.SellerRate = nuevaInvoice.SellerRate;
-            this.SellerId = nuevaInvoice.SellerId ?? null;
-            this.ZoneId = nuevaInvoice.ZoneId;
-            this.Cost = nuevaInvoice.Cost;
+            this.Id = newInvoice.Id;
+            this.Active = newInvoice.Active;
+            this.Customer = newInvoice.Customer ?? null;
+            this.CustomerId = newInvoice.CustomerId;
+            this.CreatedBy = newInvoice.CreatedBy;
+            this.Details = newInvoice.Details ?? null;
+            this.InvoiceDetails = newInvoice.InvoiceDetails ?? new List<InvoiceDetail>();
+            this.State = newInvoice.State;
+            this.CreatedDate = newInvoice.CreatedDate;
+            this.BillingDate = newInvoice.BillingDate;
+            this.ModifiedDate = newInvoice.ModifiedDate;
+            this.BranchOffice = newInvoice.BranchOffice ?? null;
+            this.BranchOfficeId = newInvoice.BranchOfficeId;
+            this.ModifiedBy = newInvoice.ModifiedBy ;
+            this.Currency = newInvoice.Currency ?? null;
+            this.CurrencyId = newInvoice.CurrencyId;
+            this.OwedAmount = newInvoice.OwedAmount;
+            this.ReturnedAmount = newInvoice.ReturnedAmount;
+            this.BeforeTaxesAmount = newInvoice.BeforeTaxesAmount;
+            this.TaxesAmount = newInvoice.TaxesAmount;
+            this.PaidAmount = newInvoice.PaidAmount;
+            this.ReceivedAmount = newInvoice.ReceivedAmount;
+            this.TotalAmount = newInvoice.TotalAmount;
+            this.InvoiceNumber = newInvoice.InvoiceNumber ?? null;
+            this.Payments = newInvoice.Payments ?? new List<Payment>();
+            this.DiscountAmount = newInvoice.DiscountAmount;
+            this.AppliedCreditNoteAmount = newInvoice.AppliedCreditNoteAmount;
+            this.Details = newInvoice.Details;
+            this.DiscountRate = newInvoice.DiscountRate;
+            this.TRN = newInvoice.TRN;
+            this.TRNType = newInvoice.TRNType;
+            this.TNRControl = newInvoice.TNRControl ?? null;
+            this.WarehouseId = newInvoice.WarehouseId;
+            this.NRC = newInvoice.NRC;
+            this.DocumentNumber = newInvoice.DocumentNumber ?? null;
+            this.CashRegisterId = newInvoice.CashRegisterId ?? null;
+            this.SellerRate = newInvoice.SellerRate;
+            this.SellerId = newInvoice.SellerId ?? null;
+            this.ZoneId = newInvoice.ZoneId;
+            this.Cost = newInvoice.Cost;
+            this.Seller = newInvoice.Seller ?? null;
+            this.Zone = newInvoice.Zone ?? null;
+            this.TRNControlId = newInvoice.TRNControlId;
+            this.AppliedCreditNote = newInvoice.AppliedCreditNote;
+            this.Taxes = newInvoice.Taxes ?? new List<InvoiceTax>();
         }
 
         public long CustomerId { get; set; }
@@ -68,7 +73,7 @@ namespace PointOfSalesV2.Entities
 
         public long WarehouseId { get; set; }
         public decimal SellerRate { get; set; } = 0;
-        public long? CajaId { get; set; }
+        public long? CashRegisterId { get; set; }
 
 
 

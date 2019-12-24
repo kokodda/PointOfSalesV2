@@ -42,7 +42,14 @@ namespace PointOfSalesV2.Entities
             this.Free = newDetail.Free;
             this.SellerRate = newDetail.SellerRate;
             this.Cost = newDetail.Cost;
+            this.ReturnAmount = newDetail.ReturnAmount;
+            this.Defective = newDetail.Defective;
         }
+        [NotMapped]
+        public bool Defective { get; set; }
+        [NotMapped]
+        public decimal ReturnAmount { get; set; }
+
 
         public long ProductId { get; set; }
         public decimal Quantity { get; set; }
