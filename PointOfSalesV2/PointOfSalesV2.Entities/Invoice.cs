@@ -134,7 +134,7 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("BranchOfficeId")]
         public BranchOffice BranchOffice { get; set; }
      
-        public virtual  List<Payment> Payments { get; set; }
+        public virtual  List<CustomerPayment> Payments { get; set; }
 
         public virtual List<InvoiceDetail> InvoiceDetails { get; set; }
         public virtual List<InvoiceTax> Taxes { get; set; }

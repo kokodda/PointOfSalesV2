@@ -14,7 +14,7 @@ namespace PointOfSalesV2.Entities
         public CustomerPayment() { }
 
         public CustomerPayment(long CustomerId, long CurrencyId, long InvoiceCurrencyId, long PaymentTypeId, decimal TotalAmount, decimal PaidAmount, string InvoiceNumber, decimal ExchangeRate, decimal OutstandingAmount,
-            string Sequence, string Details, DateTime CreatedDate, Guid CreatedBy, bool Active, decimal CurrentOutstandingAmount, string CheckbookNumber, decimal SellerRate = 0, int? SellerId = null)
+            string Sequence, string Details, DateTime CreatedDate, Guid CreatedBy, bool Active, decimal CurrentOutstandingAmount, string CheckbookNumber, decimal SellerRate = 0, int? SellerId = null, decimal currentOwedAmount=0)
         {
             this.Active = Active;
             this.CustomerId = CustomerId;
@@ -34,6 +34,7 @@ namespace PointOfSalesV2.Entities
             this.CheckbookNumber = CheckbookNumber;
             this.SellerRate = SellerRate;
             this.SellerId = SellerId;
+            this.CurrentOwedAmount = currentOwedAmount;
         }
         public long CustomerId { get; set; }
         [NotMapped]
@@ -44,7 +45,8 @@ namespace PointOfSalesV2.Entities
                 return Convert.ToInt32((DateTime.Now - this.CreatedDate).TotalDays);
             }
         }
-
+        [NotMapped]
+        public decimal CurrentOwedAmount { get; set; }
 
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }

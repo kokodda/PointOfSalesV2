@@ -15,6 +15,14 @@ namespace PointOfSalesV2.Common
         Converted='C'
         }
 
+        public enum ExcelColumnsDef
+        {
+            TEXT = 1,
+            DECIMAL = 2,
+            INTEGER = 3,
+            DATETIME = 4
+        }
+
         public enum SequenceTypes 
         {
         Invoices=1,

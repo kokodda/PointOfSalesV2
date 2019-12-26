@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using PointOfSalesV2.Common;
+using PointOfSalesV2.Repository.Helpers;
 
 namespace PointOfSalesV2.Repository
 {
     public class InvoiceRepository : Repository<Invoice>, IInvoiceRepository
     {
-        public InvoiceRepository(MainDataContext context) : base(context)
+        private readonly IDataRepositoryFactory dataRepositoryFactory;
+
+        public InvoiceRepository(MainDataContext context, IDataRepositoryFactory newDataRepo) : base(context)
         {
+            dataRepositoryFactory = newDataRepo;
         }
 
         public IEnumerable<Invoice> GetAccountsReceivable(DateTime? startDate, DateTime? endDate, long? customerId, long? currencyId, long? sellerId)
@@ -87,11 +91,15 @@ namespace PointOfSalesV2.Repository
 
                     }
 
-                    entity.InvoiceNumber = SequencesHelper.CrearControlDeinvoice();
+                    entity.InvoiceNumber = SequencesHelper.CreateInvoiceControl(this.dataRepositoryFactory);
                     entity.BillingDate = DateTime.Now;
                     var tempBranchOfiice = entity.BranchOffice??_Context.BranchOffices.Find(entity.BranchOfficeId);
                     entity.State = (entity.PaidAmount == entity.TotalAmount && entity.OwedAmount == 0) ? (char)Enums.BillingStates.Paid : (char)Enums.BillingStates.Billed;
-                    entity = invoiceHelper.AplicarNotaDeCredito(entity, appliedCreditNote, out appliedCreditNote);
+                    var creditNoteResult = InvoiceHelper.ApplyCreditNote (entity, appliedCreditNote, out appliedCreditNote);
+                    if (creditNoteResult.Status < 0)
+                        return creditNoteResult;
+                    else
+                        entity = creditNoteResult.Data.FirstOrDefault();
                     if (entity.OwedAmount > 0)
                     {
                         var balance = _Context.CustomersBalance.FirstOrDefault(x=> x.CustomerId==entity.CustomerId && x.CurrencyId==entity.CurrencyId && x.Active==true) ??
@@ -123,18 +131,18 @@ namespace PointOfSalesV2.Repository
 
                     invoice.InvoiceDetails = details;
                     invoice.BranchOffice = tempBranchOfiice;
-                    DetalleinvoiceHelper.InsertarDetalles(invoice);
+                    InvoiceDetailsHelper.AddDetails(invoice,this.dataRepositoryFactory);
                     if (entity.PaidAmount > 0 && entity.Payments != null && entity.Payments.Count > 0)
                     {
-                        string sequencePayment = SequencesHelper.CrearControlDePayments();
+                        string sequencePayment = SequencesHelper.CreatePaymentControl(this.dataRepositoryFactory);
                         foreach (var payment in entity.Payments)
                         {
                             payment.InvoiceNumber = entity.InvoiceNumber ;
                             payment.CreatedBy = entity.CreatedBy;
                             payment.CreatedDate = entity.CreatedDate;
-                            payment.CurrentOwedAmount = payment.OwedAmount;
+                            payment.CurrentOwedAmount = payment.OutstandingAmount;
                             payment.Sequence = sequencePayment;
-                            invoiceHelper.AplicarPaymentinvoice(payment);
+                            InvoiceHelper.ApplyInvoicePayment(payment,this.dataRepositoryFactory.GetCustomDataRepositories<ICustomerPaymentRepository>());
                         }
                     }
 

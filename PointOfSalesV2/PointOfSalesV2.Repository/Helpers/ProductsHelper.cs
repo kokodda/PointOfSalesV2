@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 namespace PointOfSalesV2.Repository.Helpers
 {
-  public  class ProductsHelper
+  public  class ProductsRepoHelper
     {
 
         public static bool ExistProductInInvoices(int productId, IDataRepositoryFactory dataRepositoryFactory)

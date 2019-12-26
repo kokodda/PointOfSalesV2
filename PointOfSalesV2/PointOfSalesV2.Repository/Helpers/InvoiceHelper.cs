@@ -7,7 +7,7 @@ namespace PointOfSalesV2.Repository.Helpers
 {
  public   class InvoiceHelper
     {
-        public static Result<Invoice> AplicarNotaDeCredito(Invoice invoice, CreditNote creditNoteToApply, out CreditNote creditNote)
+        public static Result<Invoice> ApplyCreditNote(Invoice invoice, CreditNote creditNoteToApply, out CreditNote creditNote)
         {
             creditNote = creditNoteToApply;
             if (!string.IsNullOrEmpty(invoice.AppliedCreditNote))
