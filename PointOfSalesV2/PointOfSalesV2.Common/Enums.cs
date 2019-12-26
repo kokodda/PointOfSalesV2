@@ -19,7 +19,7 @@ namespace PointOfSalesV2.Common
         {
         Invoices=1,
         Sellers=2,
-        Clients=3,
+        Customers=3,
         Quotes=4,
         Expenses=5,
         WarehouseTransfers=6,
