@@ -14,6 +14,8 @@ namespace PointOfSalesV2.Entities
         public long CustomerId { get; set; }
 
         public long CurrencyId { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         public decimal OwedAmount { get; set; }
 

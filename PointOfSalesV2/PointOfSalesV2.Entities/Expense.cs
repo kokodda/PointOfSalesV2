@@ -58,6 +58,8 @@ namespace PointOfSalesV2.Entities
         [MaxLength(50)]
         public string ExpenseReference { get; set; }
         public long CurrencyId { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }
         public char State { get; set; }

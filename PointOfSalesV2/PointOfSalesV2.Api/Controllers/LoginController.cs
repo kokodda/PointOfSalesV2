@@ -14,6 +14,7 @@ using PointOfSalesV2.Common;
 using PointOfSalesV2.Entities;
 using PointOfSalesV2.Entities.Model;
 using PointOfSalesV2.Repository;
+using PointOfSalesV2.Repository.Helpers;
 
 namespace PointOfSalesV2.Api.Controllers
 {
@@ -24,12 +25,14 @@ namespace PointOfSalesV2.Api.Controllers
         private readonly IOptions<AppSettings> _appSettings;
         private readonly IMemoryCache _cache;
         private readonly IBase<User> users;
+        private readonly IDataRepositoryFactory dataRepositoryFactory;
 
         public LoginController(IMemoryCache cache, IOptions<AppSettings> appSettings, IDataRepositoryFactory repositoryFactory)
         {
             this._appSettings = appSettings;
             this._cache = cache;
             this.users = repositoryFactory.GetDataRepositories<User>();
+            this.dataRepositoryFactory = repositoryFactory;
         }
 
         [HttpPost]
@@ -37,6 +40,7 @@ namespace PointOfSalesV2.Api.Controllers
         {
             try
             {
+                UsersHelper.VerifyAdminUser(this.dataRepositoryFactory);
                 User user = users.Get(x => x.Where(u => u.Active == true && u.Email == model.Email && u.Password == MD5.Encrypt(model.Password, _appSettings.Value.TokenKey)));
                 if (user == null)
                     return Ok(new { status = -1, message = "Invalid credentials" });

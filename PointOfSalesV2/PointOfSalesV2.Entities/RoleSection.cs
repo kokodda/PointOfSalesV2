@@ -11,6 +11,8 @@ namespace PointOfSalesV2.Entities
     public class RoleSection : CommonData
     {
         public long RoleId { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public string JsonData { get; set; } = "[]";
         [NotMapped]
         public List<RoleSectionData> Permissions

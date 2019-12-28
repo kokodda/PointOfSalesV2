@@ -15,6 +15,8 @@ namespace PointOfSalesV2.Entities
 
 
         public List<CustomerReturnDetail> ReturnDetails { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
 
 

@@ -19,6 +19,8 @@ namespace PointOfSalesV2.Entities
         public string InvoiceNumber { get; set; }
         public DateTime Fecha { get; set; }
         public decimal TaxAmount { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         [ForeignKey("TaxId")]
         public Tax Tax { get; set; }

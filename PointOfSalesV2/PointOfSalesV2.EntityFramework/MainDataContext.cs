@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using PointOfSalesV2.Entities;
+using PointOfSalesV2.EntityFramework;
 using System;
 using System.Linq;
 
@@ -24,6 +25,7 @@ public class MainDataContext : DbContext
     #region Tables
 
     public virtual DbSet<CashRegister> CashRegisters { get; set; }
+    public virtual DbSet<LanguageKey> LanguageKeys { get; set; }
     public virtual DbSet<CashRegisterOpening> CashRegisterOpenings { get; set; }
     public virtual DbSet<CustomerPayment> CustomersPayments { get; set; }
     public virtual DbSet<CompositeProduct> CompositeProducts { get; set; }
@@ -52,6 +54,7 @@ public class MainDataContext : DbContext
     public virtual DbSet<SequenceControl> SequencesControl { get; set; }
     public virtual DbSet<SupplierReturn> SuppliersReturns { get; set; }
     public virtual DbSet<Supplier> Suppliers { get; set; }
+    public virtual DbSet<Language> Languages { get; set; }
     public virtual DbSet<SupplierBalance> SuppliersBalances { get; set; }
     public virtual DbSet<Tax> Taxes { get; set; }
     public virtual DbSet<TRNControl> TRNsControl { get; set; }
@@ -96,7 +99,8 @@ public class MainDataContext : DbContext
         modelBuilder.Entity<Invoice>()
           .HasMany(p => p.InvoiceDetails)
           .WithOne(d=>d.Invoice).OnDelete(DeleteBehavior.Restrict);
-
+        modelBuilder.Entity<Language>().HasIndex(x=>x.Code).IsUnique();
+        modelBuilder.Entity<Language>().HasKey( x => x.Code).HasName("Code");
         modelBuilder.Entity<Product>()
          .HasMany(p => p.Taxes)
          .WithOne(d => d.Product).OnDelete(DeleteBehavior.Restrict);
@@ -109,7 +113,9 @@ public class MainDataContext : DbContext
         .HasMany(p => p.BaseCompositeProducts)
         .WithOne(d => d.Product).OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<User>().Property(x => x.UserId).HasDefaultValueSql("NEWID()");
 
+        modelBuilder.Entity<LanguageKey>().HasKey(o => new { o.LanguageCode, o.Key });
 
 
         foreach (var property in modelBuilder.Model.GetEntityTypes()
@@ -124,7 +130,7 @@ public class MainDataContext : DbContext
 
         foreach (var fk in cascadeFKs)
             fk.DeleteBehavior = DeleteBehavior.Restrict;
-
+        ModelBuilderExtensions.Seed(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }
 

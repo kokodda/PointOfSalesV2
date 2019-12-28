@@ -55,6 +55,8 @@ namespace PointOfSalesV2.Entities
         public decimal Quantity { get; set; }
         public decimal SellerRate { get; set; } = 0;
         public decimal Cost { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public decimal Amount { get; set; }
         public decimal TaxesAmount { get; set; }
         public decimal TotalAmount { get; set; }

@@ -15,6 +15,8 @@ namespace PointOfSalesV2.Entities
 
         public long ExpenseId { get; set; }
         public long CurrencyId { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public long TaxId { get; set; }
         [MaxLength(50)]
         public string Reference { get; set; }

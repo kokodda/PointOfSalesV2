@@ -16,6 +16,8 @@ namespace PointOfSalesV2.Entities
         public bool IsPrimary { get; set; }
         public int Order { get; set; }
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
 
         public decimal CostPrice { get; set; }

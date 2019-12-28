@@ -19,6 +19,8 @@ namespace PointOfSalesV2.Entities
 
 
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         public long UnitId { get; set; }
 

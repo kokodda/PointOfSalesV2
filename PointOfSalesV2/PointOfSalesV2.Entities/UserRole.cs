@@ -12,6 +12,8 @@ namespace PointOfSalesV2.Entities
         public Guid UserId { get; set; }
         public long RoleId { get; set; }
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
         [ForeignKey("RoleId")]
         public virtual Role Role { get; set; }
 

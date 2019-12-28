@@ -51,6 +51,8 @@ namespace PointOfSalesV2.Entities
         public long CurrencyId { get; set; }
         public long InvoiceCurrencyId { get; set; }
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public long PaymentTypeId { get; set; }
         [MaxLength(50)]
         public string InvoiceNumber { get; set; }

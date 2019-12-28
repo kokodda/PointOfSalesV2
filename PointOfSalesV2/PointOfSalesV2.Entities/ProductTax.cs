@@ -14,6 +14,8 @@ namespace PointOfSalesV2.Entities
 
         public long ProductId { get; set; }
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public long TaxId { get; set; }
 
 

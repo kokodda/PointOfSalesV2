@@ -16,6 +16,8 @@ namespace PointOfSalesV2.Entities
 
         public decimal TotalAmount { get; set; }
         public decimal PaidAmount { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         public decimal OwedAmount { get; set; }
         public DateTime BillingDate { get; set; }

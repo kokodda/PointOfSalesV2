@@ -31,7 +31,7 @@ namespace PointOfSalesV2.Repository
         }
         public override Result<CustomerPayment> Update(CustomerPayment entity)
         {
-            return new Result<CustomerPayment>(-1, -1, "cannotUpdatePayment_error");
+            return new Result<CustomerPayment>(-1, -1, "cannotUpdatePayment_msg");
         }
 
         public override Result<CustomerPayment> Add(CustomerPayment entity)
@@ -44,7 +44,7 @@ namespace PointOfSalesV2.Repository
                 {
                     var invoice = _Context.Invoices.FirstOrDefault(x => x.InvoiceNumber.ToLower() == entity.InvoiceNumber.ToLower() && x.Active==true);
                     if (invoice == null)
-                        return new Result<CustomerPayment>(-1,-1,"invalidInvoice_error");
+                        return new Result<CustomerPayment>(-1,-1,"invalidInvoice_msg");
                     if(invoice.OwedAmount != entity.OutstandingAmount)
                         return new Result<CustomerPayment>(-1, -1, "owedAmountOutdated_msg");
                     if(invoice.OwedAmount<=0)

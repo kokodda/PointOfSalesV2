@@ -28,6 +28,8 @@ namespace PointOfSalesV2.Entities
         public char State { get; set; }
         public decimal TotalOpeningAmount { get; set; }
         public decimal TotalClosureAmount { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         [ForeignKey("CashRegisterId")]
         public CashRegister CashRegister { get; set; }

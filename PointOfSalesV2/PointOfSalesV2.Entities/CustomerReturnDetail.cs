@@ -28,6 +28,8 @@ namespace PointOfSalesV2.Entities
 
         public Nullable<long> UnitId { get; set; }
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         [ForeignKey("CustomerId")]
         public Customer Customer { get; set; }

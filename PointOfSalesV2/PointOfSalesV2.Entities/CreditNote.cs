@@ -23,6 +23,8 @@ namespace PointOfSalesV2.Entities
         public long CurrencyId { get; set; }
 
         public bool Applied { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
         [ForeignKey("CurrencyId")]
         public Currency Currency { get; set; }

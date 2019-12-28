@@ -40,7 +40,7 @@ namespace PointOfSalesV2.Entities
             this.ReceivedAmount = newInvoice.ReceivedAmount;
             this.TotalAmount = newInvoice.TotalAmount;
             this.InvoiceNumber = newInvoice.InvoiceNumber ?? null;
-            this.Payments = newInvoice.Payments ?? new List<Payment>();
+            this.Payments = newInvoice.Payments ?? new List<CustomerPayment>();
             this.DiscountAmount = newInvoice.DiscountAmount;
             this.AppliedCreditNoteAmount = newInvoice.AppliedCreditNoteAmount;
             this.Details = newInvoice.Details;
@@ -75,6 +75,8 @@ namespace PointOfSalesV2.Entities
         public decimal SellerRate { get; set; } = 0;
         public long? CashRegisterId { get; set; }
 
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
 
         public decimal ReturnedAmount { get; set; }

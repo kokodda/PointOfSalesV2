@@ -43,6 +43,8 @@ namespace PointOfSalesV2.Entities
         [MaxLength(50)]
         public string ExpenseReference { get; set; }
         public decimal ExchangeRate { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public decimal OutstandingAmount { get; set; }
         [MaxLength(50)]
         public string Sequence { get; set; }

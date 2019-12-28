@@ -23,9 +23,13 @@ namespace PointOfSalesV2.Entities
         public virtual DateTime CreatedDate { get; set; }
 
         public virtual DateTime? ModifiedDate { get; set; }
-
+        [MaxLength(2)]
+        public virtual string LanguageCode { get; set; }
 
         public virtual bool Active { get; set; }
+
+        [ForeignKey("LanguageCode")]
+        public Language Language { get; set; }
 
         [NotMapped]
         public string TokenKey { get; set; }
@@ -44,8 +48,6 @@ namespace PointOfSalesV2.Entities
         [DataMember]
         public DateTime? BirthDay { get; set; }
 
-        [DataMember]
-        public short GenereId { get; set; }
 
         [DataMember]
         [MaxLength(15)]
@@ -93,7 +95,7 @@ namespace PointOfSalesV2.Entities
 
         [NotMapped]
         public string FullName => $"{Name}  {LastName}";
-
+        [DataMember]
         public virtual char Gender { get; set; }
 
         [ForeignKey("BranchOfficeId")]

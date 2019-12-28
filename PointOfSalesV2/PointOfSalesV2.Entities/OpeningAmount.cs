@@ -12,6 +12,8 @@ namespace PointOfSalesV2.Entities
 
         public decimal Amount { get; set; }
         public long Order { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
 
     }
 }

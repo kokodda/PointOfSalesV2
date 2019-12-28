@@ -52,6 +52,8 @@ namespace PointOfSalesV2.Entities
         public decimal PaidAmount { get; set; }
         public decimal SellerRate { get; set; } = 0;
         public long CurrencyId { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public long InvoiceCurrencyId { get; set; }
 
         public long PaymentTypeId { get; set; }

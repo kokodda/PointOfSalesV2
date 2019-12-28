@@ -20,6 +20,8 @@ namespace PointOfSalesV2.Entities
         public long WarehouseId { get; set; }
         public decimal TaxAmount { get; set; }
         public decimal TotalAmount { get; set; }
+        [NotMapped]
+        public override string TranslationData { get; set; }
         public long SupplierId { get; set; }
         public long UnitId { get; set; }
 
