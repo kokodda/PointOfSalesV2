@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfSalesV2.Api", "PointOfSalesV2.Api\PointOfSalesV2.Api.csproj", "{E11BB432-D256-4D20-8855-71ECDB3843FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointOfSalesV2.Api", "PointOfSalesV2.Api\PointOfSalesV2.Api.csproj", "{E11BB432-D256-4D20-8855-71ECDB3843FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfSalesV2.Repository", "PointOfSalesV2.Repository\PointOfSalesV2.Repository.csproj", "{EC586CB4-8DF6-4BAC-9566-4769294772B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointOfSalesV2.Repository", "PointOfSalesV2.Repository\PointOfSalesV2.Repository.csproj", "{EC586CB4-8DF6-4BAC-9566-4769294772B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfSalesV2.Entities", "PointOfSalesV2.Entities\PointOfSalesV2.Entities.csproj", "{74C4F42C-DAED-4B0E-9C59-62EAE9EB630D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointOfSalesV2.Entities", "PointOfSalesV2.Entities\PointOfSalesV2.Entities.csproj", "{74C4F42C-DAED-4B0E-9C59-62EAE9EB630D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfSalesV2.EntityFramework", "PointOfSalesV2.EntityFramework\PointOfSalesV2.EntityFramework.csproj", "{0F376C6B-091F-42C9-9514-FB625F0994E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointOfSalesV2.EntityFramework", "PointOfSalesV2.EntityFramework\PointOfSalesV2.EntityFramework.csproj", "{0F376C6B-091F-42C9-9514-FB625F0994E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfSalesV2.FrontEnd", "PointOfSalesV2.FrontEnd\PointOfSalesV2.FrontEnd.csproj", "{C5ADCF95-0B25-48CB-970E-5D969CD24C63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PointOfSalesV2.FrontEnd", "PointOfSalesV2.FrontEnd\PointOfSalesV2.FrontEnd.csproj", "{C5ADCF95-0B25-48CB-970E-5D969CD24C63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PointOfSalesV2.Common", "PointOfSalesV2.Common\PointOfSalesV2.Common.csproj", "{DF432089-5F62-44D5-9180-E12FCB7C48DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C5ADCF95-0B25-48CB-970E-5D969CD24C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5ADCF95-0B25-48CB-970E-5D969CD24C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5ADCF95-0B25-48CB-970E-5D969CD24C63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF432089-5F62-44D5-9180-E12FCB7C48DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF432089-5F62-44D5-9180-E12FCB7C48DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF432089-5F62-44D5-9180-E12FCB7C48DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF432089-5F62-44D5-9180-E12FCB7C48DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
