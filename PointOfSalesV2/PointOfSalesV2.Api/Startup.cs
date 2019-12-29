@@ -56,8 +56,28 @@ namespace PointOfSalesV2.Api
                    Path.Combine(Directory.GetCurrentDirectory(), "")));
 
 
-            //services.AddScoped<IParqueoRepository, ParqueoRepository>();
-            //services.AddScoped<IStockRepository, StockRepository>();
+            //services.AddScoped<IParqueoRepository, ParqueoRepository>(); 
+            services.AddScoped<IBranchOfficeRepository, BranchOfficeRepository>();
+            services.AddScoped<IBusinessStateRepository, BusinessStateRepository>();
+            services.AddScoped<ICompositeProductRepository, CompositeProductRepository>();
+            services.AddScoped<ICreditNoteRepository, CreditNoteRepository>();
+            services.AddScoped<ICustomerBalanceRepository, CustomerBalanceRepository>();
+            services.AddScoped<ICustomerPaymentRepository, CustomerPaymentRepository>();
+            services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            services.AddScoped<IInventoryEntryRepository, InventoryEntryRepository>();
+            services.AddScoped<IExpenseTaxRepository, ExpenseTaxRepository>();                                                                 
+            services.AddScoped<IInventoryRepository, InventoryRepository>();
+            services.AddScoped<IInvoiceDetailRepository, InvoiceDetailRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IInvoiceTaxRepository, InvoiceTaxRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductTaxRepository, ProductTaxRepository>();
+            services.AddScoped<ISupplierReturnRepository, SupplierReturnRepository>();
+            services.AddScoped<IUnitProductEquivalenceRepository, UnitProductEquivalenceRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IWarehouseMovementRepository, WarehouseMovementRepository>();
+            services.AddScoped<IWarehouseRepository, WarehouseRepository>();
+            services.AddScoped<IWarehouseTransferRepository, WarehouseTransferRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDataRepositoryFactory, DataRepositoriesFactory>();
