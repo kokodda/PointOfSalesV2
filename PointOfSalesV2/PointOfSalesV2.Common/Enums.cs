@@ -73,7 +73,9 @@ namespace PointOfSalesV2.Common
             Operations=31,
             Menu=32,
             Sellers=33,
-            Zones=34
+            Zones=34,
+            UserRoles=35,
+            WarehouseMovements=36,
 
         }
         public enum MovementTypes

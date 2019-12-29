@@ -58,7 +58,7 @@ namespace PointOfSalesV2.Api.Security
                     context.Result = new ForbidResult();
                 else
                 {
-                    var actualPermission = user.Permissions.Where(x => currentController.Intersect(x.Controllers.Split(",")).Any()||
+                    var actualPermission = user.Permissions.Count() == 0 ? new UserOperation() : user.Permissions.Where(x => currentController.Intersect(x.Controllers.Split(",")).Any()||
                     x.Controllers.ToLower() == "*").FirstOrDefault();
 
                     if (actualPermission == null && user.Permissions.Count() > 0)

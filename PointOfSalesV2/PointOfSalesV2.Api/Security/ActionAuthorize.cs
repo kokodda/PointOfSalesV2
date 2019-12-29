@@ -56,9 +56,9 @@ namespace PointOfSalesV2.Api.Security
                     context.Result = new ForbidResult();
                 else
                 {
-                    var operations = user.Permissions.Where(r => (r.Controllers.ToLower().Split(",").ToList().Contains(currentController.ToLower()) || r.Controllers=="*") && (r.OperationId==(int)_operation || _operation== Operations.ALL));
+                    var operations =user.Permissions.Count()==0? new List<UserOperation>() {new UserOperation() }: user.Permissions.Where(r => (r.Controllers.ToLower().Split(",").ToList().Contains(currentController.ToLower()) || r.Controllers=="*") && (r.OperationId==(int)_operation || _operation== Operations.ALL));
 
-                    if (user.Permissions.Count() > 0 && operations==null)
+                    if (user.Permissions.Count() > 0  && (operations==null || operations.Count()==0))
                         context.Result = new ForbidResult();
                 }
 
