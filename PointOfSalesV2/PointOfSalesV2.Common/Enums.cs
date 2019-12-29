@@ -89,7 +89,43 @@ namespace PointOfSalesV2.Common
             CREDITCARD = 3,
             BANKTRANSFER=4
         }
-
+       public static Dictionary<AppSections, string> SectionsControllers = new Dictionary<AppSections, string>()
+        {
+            {AppSections.Permissions,"User,UserClaims,Role,RoleSection,Section,SectionOperation" },
+            {AppSections.CustomerRates,"Customer,CustomerRate" },
+            {AppSections.Products,"Product,ProductTax" },
+            {AppSections.CustomerPayments,"Customer,CustomerPayment" },
+            {AppSections.Currencies,"Currency" },
+            {AppSections.Taxes,"Taxe" },
+            {AppSections.Invoices,"Invoice,InvoiceDetail,TRNControl,Unit,UnitProductEquivalence,Seller,BranchOffice,Warehouse,CreditNote,Currency,Customer,Inventory,PaymentType" },
+            {AppSections.Quotes,"Invoice,InvoiceDetail,Unit,UnitProductEquivalence,Seller,Currency,Customer" },
+            {AppSections.Customers,"Customer,BranchOffice,Warehouse,TRNControl,Zone" },
+            {AppSections.Warehouses,"BranchOffice,Warehouse" },
+            {AppSections.All,"*" },
+            {AppSections.Inventories,"Inventory,Product,BranchOffice,Warehouse,Supplier" },
+            {AppSections.TRNControl,"TRNControl" },
+            {AppSections.Expenses,"Supplier,Expense,Tax,ExpenseTax,Currency" },
+            {AppSections.BranchOffices,"BranchOffice,Warehouse" },
+            {AppSections.ExpensesPayments,"Supplier,BranchOffice,User,Currency,Tax" },
+            {AppSections.Suppliers,"Supplier" },
+            {AppSections.Units,"Unit" },
+            {AppSections.Users,"User,BranchOffice,Warehouse,CashRegister" },
+            {AppSections.PaymentTypes,"PaymentType" },
+            {AppSections.CashRegisters,"CashRegister,BranchOffice" },
+            {AppSections.CashRegisterOpenings,"CashRegister,User,CashRegisterOpening" },
+            {AppSections.CashRegisterOpeningsAmounts,"CashRegister,User,CashRegisterOpening" },
+            {AppSections.IncomeMovements,"Supplier,Product,Tax,User" },
+            {AppSections.CustomersReturns,"Invoice,Product,InvoiceDetail,Customer" },
+            {AppSections.SuppliersReturns,"Supplier,Expense,Tax,Currency" },
+            {AppSections.WarehouseTransfers,"BranchOffice,Warehouse,User,Product,Unit" },
+            {AppSections.ProductUnits,"Product,Unit," },
+            {AppSections.Roles,"Role" },
+            {AppSections.Sections,"Section" },
+            {AppSections.Operations,"Operation" },
+            {AppSections.Menu,"" },
+            {AppSections.Sellers,"Seller,Zone,BranchOffice" },
+            {AppSections.Zones,"" },
+        };
         public enum Gender
         {
             Male = 'M',
@@ -102,7 +138,9 @@ namespace PointOfSalesV2.Common
             ADD = 2,
             UPDATE = 3,
             DELETE = 4,
-
+            READALL=5,
+            READPAGED=6,
+            ALL=7
         }
     }
 }

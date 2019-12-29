@@ -117,6 +117,8 @@ public class MainDataContext : DbContext
 
         modelBuilder.Entity<LanguageKey>().HasKey(o => new { o.LanguageCode, o.Key });
 
+        modelBuilder.Entity<SectionOperation>().HasOne(y => y.Operation).WithMany(y=>y.Sections).OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<SectionOperation>().HasOne(y => y.Section).WithMany(x => x.Operations).OnDelete(DeleteBehavior.Restrict);
 
         foreach (var property in modelBuilder.Model.GetEntityTypes()
           .SelectMany(t => t.GetProperties())

@@ -11,11 +11,12 @@ using PointOfSalesV2.Api.Security;
 using PointOfSalesV2.Entities;
 using PointOfSalesV2.Entities.Model;
 using PointOfSalesV2.Repository;
+using static PointOfSalesV2.Common.Enums;
 
 namespace PointOfSalesV2.Api.Controllers
 {
 
-    // [ControllerAuthorize]       ODataController
+        //   ODataController
     public abstract class BaseController<T> : ControllerBase where T : class, ICommonData, new()
     {
         protected readonly IDataRepositoryFactory _repositoryFactory;
@@ -29,7 +30,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpGet]
-     //   [ActionAuthorize("ReadAll")]
+       [ActionAuthorize(Operations.READALL)]
         //[EnableQuery(AllowedQueryOptions = AllowedQueryOptions.All)]
         public virtual IActionResult Get()
         {
@@ -48,7 +49,7 @@ namespace PointOfSalesV2.Api.Controllers
 
         [HttpGet("{id:long}")]
        //[EnableQuery]
-        [ActionAuthorize("Read")]
+        [ActionAuthorize( Operations.READ)]
         public virtual IActionResult Get(long id)
         {
             try
@@ -65,7 +66,7 @@ namespace PointOfSalesV2.Api.Controllers
 
         [HttpGet("{number:int}/{size:int}")]
        // [EnableQuery]
-        [ActionAuthorize("ReadPaged")]
+        [ActionAuthorize(Operations.READPAGED)]
         public virtual IActionResult Get(int number, int size)
         {
             try
@@ -85,7 +86,7 @@ namespace PointOfSalesV2.Api.Controllers
 
 
         [HttpPost]
-        [ActionAuthorize("Add")]
+        [ActionAuthorize(Operations.ADD)]
         public virtual IActionResult Post([FromBody] T model)
         {
             try
@@ -109,7 +110,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpPut]
-        [ActionAuthorize("Update")]
+        [ActionAuthorize(Operations.UPDATE)]
         public virtual IActionResult Put([FromBody] T model)
         {
             try
@@ -126,7 +127,7 @@ namespace PointOfSalesV2.Api.Controllers
         }
 
         [HttpDelete("{id:long}")]
-        [ActionAuthorize("Delete")]
+        [ActionAuthorize(Operations.DELETE)]
         public virtual IActionResult Delete(long id)
         {
             try

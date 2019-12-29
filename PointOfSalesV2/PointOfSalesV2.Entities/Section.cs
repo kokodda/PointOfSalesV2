@@ -12,8 +12,10 @@ namespace PointOfSalesV2.Entities
     {
         [MaxLength(100)]
         public string Name { get; set; }
+        [MaxLength(1000)]
+        public string Controllers { get; set; } = "";
 
-
+        public IEnumerable<SectionOperation> Operations { get; set; }
 
     }
 }

@@ -13,7 +13,7 @@ namespace PointOfSalesV2.Entities
         [MaxLength(100)]
         public string Name { get; set; }
 
-
+        public IEnumerable<SectionOperation> Sections { get; set; }
 
     }
 }

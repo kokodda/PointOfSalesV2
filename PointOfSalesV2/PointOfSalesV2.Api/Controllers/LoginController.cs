@@ -26,6 +26,7 @@ namespace PointOfSalesV2.Api.Controllers
         private readonly IMemoryCache _cache;
         private readonly IBase<User> users;
         private readonly IDataRepositoryFactory dataRepositoryFactory;
+        private readonly IUserRepository userRepository;
 
         public LoginController(IMemoryCache cache, IOptions<AppSettings> appSettings, IDataRepositoryFactory repositoryFactory)
         {
@@ -33,6 +34,7 @@ namespace PointOfSalesV2.Api.Controllers
             this._cache = cache;
             this.users = repositoryFactory.GetDataRepositories<User>();
             this.dataRepositoryFactory = repositoryFactory;
+            this.userRepository = this.dataRepositoryFactory.GetCustomDataRepositories<IUserRepository>();
         }
 
         [HttpPost]

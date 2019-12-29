@@ -7,13 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static PointOfSalesV2.Common.Enums;
 
 namespace PointOfSalesV2.Api.Security
 {
 
     public class ActionAuthorize : TypeFilterAttribute
     {
-        public ActionAuthorize(string operation) : base(typeof(ActionRequirementFilter))
+        public ActionAuthorize(Operations operation) : base(typeof(ActionRequirementFilter))
         {
 
             Arguments = new object[] { operation };
@@ -26,11 +27,11 @@ namespace PointOfSalesV2.Api.Security
 
     public class ActionRequirementFilter : IAuthorizationFilter
     {
-        readonly string _operation;
+        readonly Operations _operation;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IMemoryCache _cache;
 
-        public ActionRequirementFilter(string operation, IHttpContextAccessor httpContextAccessor, IMemoryCache cache)
+        public ActionRequirementFilter(Operations operation, IHttpContextAccessor httpContextAccessor, IMemoryCache cache)
         {
             _operation = operation;
             _httpContextAccessor = httpContextAccessor;
@@ -55,7 +56,7 @@ namespace PointOfSalesV2.Api.Security
                     context.Result = new ForbidResult();
                 else
                 {
-                    var operations = user.Permissions.Where(r => r.SectionName.ToLower()==currentController.ToLower() && r.OperationName.ToLower()==_operation.ToLower());
+                    var operations = user.Permissions.Where(r => (r.Controllers.ToLower().Split(",").ToList().Contains(currentController.ToLower()) || r.Controllers=="*") && (r.OperationId==(int)_operation || _operation== Operations.ALL));
 
                     if (user.Permissions.Count() > 0 && operations==null)
                         context.Result = new ForbidResult();

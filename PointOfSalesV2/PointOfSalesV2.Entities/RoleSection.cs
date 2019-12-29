@@ -13,16 +13,11 @@ namespace PointOfSalesV2.Entities
         public long RoleId { get; set; }
         [NotMapped]
         public override string TranslationData { get; set; }
-        public string JsonData { get; set; } = "[]";
-        [NotMapped]
-        public List<RoleSectionData> Permissions
-        {
-            get
-
-            {
-                return JsonConvert.DeserializeObject<List<RoleSectionData>>(this.JsonData);
-            }
-        }
+       public long SectionId { get; set; }
+        [ForeignKey("SectionId")]
+      public virtual Section Section { get; set; }
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; }
 
     }
 }

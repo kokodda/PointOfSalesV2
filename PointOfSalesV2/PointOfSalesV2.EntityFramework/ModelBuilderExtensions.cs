@@ -14,7 +14,7 @@ namespace PointOfSalesV2.EntityFramework
         public static void Seed(this ModelBuilder modelBuilder)
         {
             List<Operation> operations = new List<Operation>();
-            foreach (var operation in Enum.GetValues(typeof(AppSections)).Cast<AppSections>().ToList())
+            foreach (var operation in Enum.GetValues(typeof(Operations)).Cast<Operations>().ToList())
             {
                 operations.Add(new Operation()
                 {
@@ -71,18 +71,37 @@ namespace PointOfSalesV2.EntityFramework
                     CreatedByName = "admin"
                 });
             }
+            int count = 0;
+            var sectionOperations = new List<SectionOperation>();
             var sections = new List<Section>();
             foreach (var section in Enum.GetValues(typeof(AppSections)).Cast<AppSections>().ToList())
             {
+                count++;
                 sections.Add(new Section()
                 {
                     Id = (long)section,
                     Name = section.ToString(),
                     Active = true,
+                    Controllers=Enums.SectionsControllers[section],
                     CreatedBy = new Guid("8A2FDD4A-E702-482C-F181-08D7015E3521"),
                     CreatedDate = DateTime.Now,
                     CreatedByName = "admin"
                 });
+
+                foreach (var operation in operations)
+                {
+                    sectionOperations.Add(new SectionOperation()
+                    {
+                        Active = true,
+                        CreatedBy = new Guid(),
+                        CreatedByName = "admin",
+                        CreatedDate = DateTime.Now,
+                        OperationId = operation.Id,
+                        SectionId = (long)section,
+                        Id = count
+                    });
+                    count++;
+                }
             }
 
             modelBuilder.Entity<User>().HasData(new User()
@@ -130,7 +149,6 @@ namespace PointOfSalesV2.EntityFramework
 
             };
             modelBuilder.Entity<Language>().HasData(languages);
-            var sectionoperations = new List<SectionOperation>();
             var basicLanguageKeys = new List<LanguageKey>();
             foreach (var language in languages) 
             {
@@ -432,8 +450,11 @@ new LanguageKey()
             modelBuilder.Entity<SequenceControl>().HasData(sequenceControls);
             modelBuilder.Entity<MovementType>().HasData(movementTypes);
             modelBuilder.Entity<Section>().HasData(sections);
+            modelBuilder.Entity<SectionOperation>().HasData(sectionOperations);
             modelBuilder.Entity<LanguageKey>().HasData(basicLanguageKeys);
 
         }
+
+       
     }
 }

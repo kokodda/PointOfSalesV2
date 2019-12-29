@@ -2,17 +2,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Caching.Memory;
+using PointOfSalesV2.Common;
 using PointOfSalesV2.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static PointOfSalesV2.Common.Enums;
 
 namespace PointOfSalesV2.Api.Security
 {
     public class ControllerAuthorize : TypeFilterAttribute
     {
-        public ControllerAuthorize(string section="") : base(typeof(ClaimRequirementFilter))
+        public ControllerAuthorize(AppSections section) : base(typeof(ClaimRequirementFilter))
         {
 
             Arguments = new object[] { section };
@@ -25,13 +27,13 @@ namespace PointOfSalesV2.Api.Security
 
     public class ClaimRequirementFilter : IAuthorizationFilter
     {
-        readonly string[] _section;
+        readonly AppSections _section;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IMemoryCache _cache;
 
-        public ClaimRequirementFilter(string section, IHttpContextAccessor httpContextAccessor, IMemoryCache cache)
+        public ClaimRequirementFilter(AppSections section, IHttpContextAccessor httpContextAccessor, IMemoryCache cache)
         {
-            _section = string.IsNullOrEmpty(section)?new string[0]:(section.Contains(",")?section.ToLower().Split(","):new string[1] { section.ToLower()});
+            _section = section;
             _httpContextAccessor = httpContextAccessor;
             _cache = cache;
         }
@@ -44,7 +46,7 @@ namespace PointOfSalesV2.Api.Security
 
             var currentPath = _httpContextAccessor.HttpContext.Request.Path.ToString().Split("/").ToList();
             int index = currentPath.IndexOf("api") + 1;
-            string[] currentController =_section.Length==0? new string[1] { currentPath[index] } :_section;
+            string[] currentController =_section== AppSections.All? new string[1] { currentPath[index] } :Enums.SectionsControllers[_section].Split(",");
             if (string.IsNullOrEmpty(currentToken) || currentController.Length==0 || !currentToken.Contains("Bearer"))
                 isInvalid = true;
 
@@ -56,8 +58,8 @@ namespace PointOfSalesV2.Api.Security
                     context.Result = new ForbidResult();
                 else
                 {
-                    var actualPermission = user.Permissions.Where(x => currentController.Contains(x.SectionName.ToLower())||
-                    x.SectionName.ToLower() == "*").FirstOrDefault();
+                    var actualPermission = user.Permissions.Where(x => currentController.Intersect(x.Controllers.Split(",")).Any()||
+                    x.Controllers.ToLower() == "*").FirstOrDefault();
 
                     if (actualPermission == null && user.Permissions.Count() > 0)
                         context.Result = new ForbidResult();
