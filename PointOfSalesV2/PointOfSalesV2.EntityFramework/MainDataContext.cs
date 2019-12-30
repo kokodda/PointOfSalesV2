@@ -116,9 +116,11 @@ public class MainDataContext : DbContext
         modelBuilder.Entity<User>().Property(x => x.UserId).HasDefaultValueSql("NEWID()");
 
         modelBuilder.Entity<LanguageKey>().HasKey(o => new { o.LanguageCode, o.Key });
-
-        modelBuilder.Entity<SectionOperation>().HasOne(y => y.Operation).WithMany(y=>y.Sections).OnDelete(DeleteBehavior.Restrict);
-        modelBuilder.Entity<SectionOperation>().HasOne(y => y.Section).WithMany(x => x.Operations).OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Section>().HasMany(x => x.Operations).WithOne(x => x.Section).OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Operation>().HasMany(x => x.Sections).WithOne(x => x.Operation).OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<SectionOperation>().HasOne(y => y.Operation).WithMany(y=>y.Sections).OnDelete(DeleteBehavior.Cascade);
+       modelBuilder.Entity<SectionOperation>().HasOne(y => y.Section).WithMany(x => x.Operations).OnDelete(DeleteBehavior.Cascade);
+      
 
         foreach (var property in modelBuilder.Model.GetEntityTypes()
           .SelectMany(t => t.GetProperties())

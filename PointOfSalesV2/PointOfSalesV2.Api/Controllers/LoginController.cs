@@ -43,13 +43,13 @@ namespace PointOfSalesV2.Api.Controllers
             try
             {
                 UsersHelper.VerifyAdminUser(this.dataRepositoryFactory);
-                User user = users.Get(x => x.Where(u => u.Active == true && u.Email == model.Email && u.Password == MD5.Encrypt(model.Password, _appSettings.Value.TokenKey)));
+                User user = userRepository.Login(model, _appSettings.Value.TokenKey);
                 if (user == null)
                     return Ok(new { status = -1, message = "Invalid credentials" });
                 var claims = new[]
            {
                         new Claim(JwtRegisteredClaimNames.UniqueName, user.Email),
-                        new Claim(JwtRegisteredClaimNames.Sid,  user.Id.ToString()),
+                        new Claim(JwtRegisteredClaimNames.Sid,  user.UserId.ToString()),
                         //new Claim("miValor", "Lo que yo quiera"),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                     };

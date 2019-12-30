@@ -127,6 +127,8 @@ namespace PointOfSalesV2.Common
             {AppSections.Menu,"" },
             {AppSections.Sellers,"Seller,Zone,BranchOffice" },
             {AppSections.Zones,"" },
+            {AppSections.UserRoles,"Users,Role,UserRole" },
+            {AppSections.WarehouseMovements,"" },
         };
         public enum Gender
         {

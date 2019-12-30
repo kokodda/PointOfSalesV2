@@ -35,9 +35,10 @@ namespace PointOfSalesV2.Repository
                            SectionId=so.SectionId,
                            SectionName=so.Section.Name
                         }
-                        );
+                        ).ToList();
 
             }
+            _Context.Dispose();
             return user;
         }
     }

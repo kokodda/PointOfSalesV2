@@ -9,7 +9,7 @@ namespace PointOfSalesV2.Entities
 {
     public class SectionOperation : CommonData
     {
-        public long SectionId { get; set; }
+        public long? SectionId { get; set; }
         public long OperationId { get; set; }
 
         [ForeignKey("SectionId")]

@@ -105,10 +105,10 @@ namespace PointOfSalesV2.Entities
         [ForeignKey("WarehouseId")]
         public virtual Warehouse Warehouse { get; set; }
 
-        public virtual IEnumerable<UserClaims> Claims { get; set; }
+        public virtual List<UserClaims> Claims { get; set; }
 
-        public virtual IEnumerable<UserOperation> Permissions { get; set; }
+        public virtual List<UserOperation> Permissions { get; set; }
        [NotMapped]
-        public long Id { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public long Id { get ; set ; }
     }
 }
